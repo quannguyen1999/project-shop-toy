@@ -21,6 +21,10 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        loadData();
+    }
+
+    private void loadData() {
         Account account=new Account();
         account.setUserName("admin");
         account.setPassword("fuck");
@@ -28,9 +32,13 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         Account account1=new Account();
         account1.setUserName("employee");
         account1.setPassword("123");
+        if(accountRepository.findById(account.getUserName()).isPresent()==false){
+            accountRepository.save(account);
+        }
 
-        accountRepository.save(account);
-        accountRepository.save(account1);
+        if(accountRepository.findById(account1.getUserName()).isPresent()==false){
+            accountRepository.save(account1);
+        }
 
         Customer customer=new Customer();
         customer.setAccount(account);
@@ -40,7 +48,9 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         customer.setFirstName("kim");
         customer.setLastName("quyen");
 
-        customerRepository.save(customer);
+        if(customerRepository.findCustomerByUserName(customer.getAccount().getUserName())==null){
+            customerRepository.save(customer);
+        }
 
     }
 }

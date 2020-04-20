@@ -2,6 +2,7 @@ package com.springframework.projectshoptoy.service;
 
 import com.springframework.projectshoptoy.domain.Account;
 import com.springframework.projectshoptoy.domain.Customer;
+import com.springframework.projectshoptoy.repositories.AccountRepository;
 import com.springframework.projectshoptoy.repositories.CustomerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,12 +23,14 @@ public class CustomerServiceImplTest {
     @Mock
     CustomerRepository customerRepository;
 
+    @Mock
+    AccountRepository accountRepository;
+
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-
-        customerServiceImpl=new CustomerServiceImpl(customerRepository);
+        customerServiceImpl=new CustomerServiceImpl(customerRepository,accountRepository);
     }
 
     @Test

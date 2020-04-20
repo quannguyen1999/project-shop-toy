@@ -1,28 +1,31 @@
 package com.springframework.projectshoptoy.service;
 
+import com.springframework.projectshoptoy.domain.Account;
 import com.springframework.projectshoptoy.domain.Customer;
+import com.springframework.projectshoptoy.exception.ConflixIdException;
+import com.springframework.projectshoptoy.exception.NotFoundException;
+import com.springframework.projectshoptoy.repositories.AccountRepository;
 import com.springframework.projectshoptoy.repositories.CustomerRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
+@RequiredArgsConstructor
 @Slf4j
 @Service
 public class CustomerServiceImpl implements  CustomerService{
     MongoTemplate mongoTemplate;
 
     private final CustomerRepository customerRepository;
-
-    public CustomerServiceImpl(CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
-    }
+    private final AccountRepository accountRepository;
 
     @Override
     public Set<Customer> getCustomers() {
@@ -33,12 +36,10 @@ public class CustomerServiceImpl implements  CustomerService{
 
     @Override
     public boolean deleteCustomerById(String id) {
-        Optional<Customer> customer=customerRepository.findById(id);
-        if(customer.get()!=null){
-            customerRepository.delete(customer.get());
-            return true;
-        }
-        return false;
+        Customer customer=customerRepository.findById(id).orElseThrow(()->new NotFoundException("can't find id "+id));
+        accountRepository.delete(customer.getAccount());
+        customerRepository.delete(customer);
+        return true;
     }
 
     @Override
@@ -48,5 +49,42 @@ public class CustomerServiceImpl implements  CustomerService{
             return customer;
         }
         return null;
+    }
+
+    @Override
+    public Customer findCustomerById(String id) {
+        return customerRepository.findById(id).orElseThrow(()->new NotFoundException("can find id "+id));
+    }
+
+    @Override
+    public Customer createNewCustomer(String userName,Customer customer) {
+        Account account=accountRepository.findById(userName).orElseThrow(()->new NotFoundException("not found userName "+userName));
+        Customer customer1=customerRepository.findCustomerByUserName(userName);
+        if(customer1!=null){
+            throw  new ConflixIdException("userName has exists account customer:"+customer1.getCustomerID());
+        }
+        customer.setAccount(account);
+        return  customerRepository.save(customer);
+    }
+
+    @Override
+    public Customer updateCustomer(String id, Customer customer) {
+        Customer customer1=customerRepository.findById(id).orElseThrow(()->new NotFoundException("not found id "+id));
+        if(customer.getAddress()!=null){
+            customer1.setAddress(customer.getAddress());
+        }
+        if(customer.getCity()!=null){
+            customer1.setCity(customer.getCity());
+        }
+        if(customer.getEmail()!=null){
+            customer1.setEmail(customer.getEmail());
+        }
+        if(customer.getFirstName()!=null){
+            customer1.setFirstName(customer.getFirstName());
+        }
+        if(customer.getLastName()!=null){
+            customer1.setLastName(customer.getLastName());
+        }
+        return customerRepository.save(customer1);
     }
 }
