@@ -7,11 +7,15 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @Document
-public class Account {
+public class Customer {
     @Id
-    private String userName;
-    private String password;
-    private boolean accType;
+    private String customerID;
+    private String address;
+    private String city;
+    private String email;
+    private String firstName;
+    private String lastName;
 
-
+    @DBRef
+    private Account account;
 }
