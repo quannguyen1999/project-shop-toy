@@ -1,0 +1,71 @@
+package com.springframework.projectshoptoy.controller;
+
+import com.springframework.projectshoptoy.domain.Account;
+import com.springframework.projectshoptoy.domain.Customer;
+import com.springframework.projectshoptoy.domain.ErrorException;
+import com.springframework.projectshoptoy.exception.ConflixIdException;
+import com.springframework.projectshoptoy.service.AccountService;
+import com.springframework.projectshoptoy.service.CustomerService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.omg.CosNaming.NamingContextPackage.NotFound;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.server.handler.ResponseStatusExceptionHandler;
+import org.springframework.web.servlet.mvc.method.annotation.ServletResponseMethodArgumentResolver;
+
+import javax.validation.Valid;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+@Slf4j
+@RequiredArgsConstructor
+@RequestMapping(AccountController.BASE_URL)
+@RestController
+public class AccountController {
+    public final static String BASE_URL="/api/accounts";
+    private final AccountService accountService;
+
+    //lấy danh sách account
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public Set<Account> accounts(){
+        return accountService.getListAccount();
+    }
+
+    //xóa account bằng id
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ErrorException> deleteAccount(@PathVariable String id){
+        log.debug("deleting id:"+id);
+        accountService.deleteAccount(id);
+        ErrorException errorException=new ErrorException();
+        errorException.setStatus(HttpStatus.OK.toString());
+        errorException.setError("delete success");
+        return new ResponseEntity<ErrorException>(errorException,HttpStatus.OK);
+    }
+
+    //Tìm kiếm account bằng id
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Account findAccountById( @PathVariable String id){
+        return accountService.findAccountByUserName(id);
+    }
+
+    //thêm account
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Account createNewAccount(@Valid @RequestBody Account account){
+//        return account;
+        return accountService.createNewAccount(account);
+    }
+
+    //update accuont
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Account updateAccount(@PathVariable String id,@RequestBody Account account){
+        return accountService.updateAccount(id,account);
+    }
+}

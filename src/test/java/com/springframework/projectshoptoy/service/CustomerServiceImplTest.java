@@ -1,11 +1,14 @@
 package com.springframework.projectshoptoy.service;
 
+import com.springframework.projectshoptoy.domain.Account;
 import com.springframework.projectshoptoy.domain.Customer;
 import com.springframework.projectshoptoy.repositories.CustomerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -46,5 +49,22 @@ public class CustomerServiceImplTest {
 
         assertEquals(1,resultListCustomer.size());
         verify(customerRepository,times(1)).findAll();
+    }
+
+    @Test
+    void findCustomerByUserName() throws Exception {
+        Account account=new Account();
+        account.setUserName("admin");
+
+        Customer customerFind=new Customer();
+        customerFind.setFirstName("quan");
+        customerFind.setAccount(account);
+
+        when(customerRepository.findCustomerByUserName(any())).thenReturn(customerFind);
+
+        Customer customer=customerServiceImpl.findCustomerByUserName(account.getUserName());
+
+        assertEquals(account.getUserName(),customer.getAccount().getUserName());
+
     }
 }

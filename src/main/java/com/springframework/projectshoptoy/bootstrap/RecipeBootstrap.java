@@ -25,7 +25,6 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         account.setUserName("admin");
         account.setPassword("fuck");
 
-
         Account account1=new Account();
         account1.setUserName("employee");
         account1.setPassword("123");
