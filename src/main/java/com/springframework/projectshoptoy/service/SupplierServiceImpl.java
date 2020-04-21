@@ -38,10 +38,12 @@ public class SupplierServiceImpl implements   SupplierService{
 
     @Override
     public Supplier createNewSupplier(Supplier supplier) {
-        Optional<Supplier> supplier1=supplierRepository.findById(supplier.getSupplierID());
-        if(supplier1.isPresent()==true){
-            log.error("conflix id");
-            throw new ConflixIdException("conflix id");
+        if(supplier.getSupplierID()!=null){
+            Optional<Supplier> supplier1=supplierRepository.findById(supplier.getSupplierID());
+            if(supplier1.isPresent()==true){
+                log.error("conflix id");
+                throw new ConflixIdException("conflix id");
+            }
         }
         return  supplierRepository.save(supplier);
     }

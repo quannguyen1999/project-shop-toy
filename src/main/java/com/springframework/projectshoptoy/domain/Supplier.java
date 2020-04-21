@@ -5,17 +5,20 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 @Data
 @Document
 public class Supplier {
-    @NotBlank
     @Id
     private String supplierID;
 
+    @NotEmpty
     private String phone;
 
+    @NotEmpty
     private String companyName;
 
+    @NotEmpty
     private String address;
 }

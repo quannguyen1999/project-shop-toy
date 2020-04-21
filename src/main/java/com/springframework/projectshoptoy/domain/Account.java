@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @Document
 public class Account {
-    @NotBlank(message = "id can't be empty")
+    @NotBlank(message = "userName can't be empty")
     @Id
     private String userName;
 

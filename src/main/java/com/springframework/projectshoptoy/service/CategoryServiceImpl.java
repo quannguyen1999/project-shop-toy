@@ -40,14 +40,13 @@ public class CategoryServiceImpl implements  CategoryService{
 
     @Override
     public Category createNewCategory(Category category) {
-//        Optional<Category> category1=categoryRepository.findById(category.getCategoryID());
-//        if(category1.isPresent()==true){
-//            log.error("conflix id");
-//            throw new ConflixIdException("conflix id");
-//        }
-//        log.debug(category.toString());
-//        Category insertToCategory=category;
-//        category.setCategoryID(String.valueOf(new ObjectId()));
+        if(category.getCategoryID()!=null){
+            Optional<Category> category1=categoryRepository.findById(category.getCategoryID());
+            if(category1.isPresent()==true){
+                log.error("conflix id");
+                throw new ConflixIdException("conflix id "+category1.get().getCategoryID());
+            }
+        }
         return  categoryRepository.save(category);
     }
 

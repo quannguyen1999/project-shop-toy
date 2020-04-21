@@ -34,8 +34,10 @@ public class AccountServiceImpl implements  AccountService{
         Account account=accountRepository.findById(userName).orElseThrow(()->new NotFoundException("can find id "+userName));
         Customer customer=customerRepository.findCustomerByUserName(userName);
         if(customer!=null){
+
             customerRepository.delete(customer);
         }
+
         accountRepository.delete(account);
         return true;
     }

@@ -6,23 +6,25 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Document
 public class Order {
-    @NotBlank
     @Id
     private String orderID;
 
     private LocalDate orderDate;
 
+    @NotEmpty
     private String shipCity;
 
+    @NotEmpty
     private String shipRegion;
 
-    @DateTimeFormat
+    @DateTimeFormat(pattern = "dd/mm/yyyy")
     private LocalDate shippedDate;
 
     @DBRef

@@ -5,23 +5,29 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.*;
 
 @Data
 @Document
 public class Product {
-    @NotBlank
+
     @Id
     private String productID;
 
     private boolean discontinued;
 
+    @NotEmpty
     private String moTa;
 
+    @NotEmpty
     private String productName;
 
+    @NotNull
+    @Min(value = 0)
     private int quantityInStock;
 
+    @NotNull
+    @Min(value = 0)
     private double unitPrice;
 
     @DBRef
