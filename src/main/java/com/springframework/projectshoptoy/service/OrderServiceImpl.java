@@ -175,12 +175,13 @@ public class OrderServiceImpl implements OrderService{
         return orderDetailRepository.save(orderDetails);
     }
 
-
-
 	@Override
 	public Set<Order> getListOrderByCustomerID(String id) {
-//		orderRepository.findListOrderByIdCustomer(id)
-		// TODO Auto-generated method stub
-		return null;
+		Set<Order> listOrderSet=new HashSet<Order>();
+		orderRepository.findListOrderByIdCustomer(id).iterator().forEachRemaining(listOrderSet::add);
+		if(listOrderSet.size()<=0) {
+			throw new NotFoundException("customer don't have any order");
+		}
+		return listOrderSet;
 	}
 }

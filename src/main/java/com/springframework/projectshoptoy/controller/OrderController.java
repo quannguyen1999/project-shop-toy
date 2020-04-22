@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import java.util.List;
 import java.util.Set;
 
 @Slf4j
@@ -56,6 +58,13 @@ public class OrderController {
     @ResponseStatus(HttpStatus.OK)
     public Order findOrderByID(@PathVariable String id){
         return orderService.findOrderById(id);
+    }
+    
+    //tìm kiếm danh sách order của khách hàng 
+    @GetMapping("/customer/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Set<Order> getListOrderByCustomerID(@PathVariable String id){
+    	return orderService.getListOrderByCustomerID(id);
     }
 
     //tìm kiếm 1 orderDetails bằng idOrderDetails
