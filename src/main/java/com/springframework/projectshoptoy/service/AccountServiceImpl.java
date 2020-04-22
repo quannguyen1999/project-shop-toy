@@ -2,24 +2,32 @@ package com.springframework.projectshoptoy.service;
 
 import com.springframework.projectshoptoy.domain.Account;
 import com.springframework.projectshoptoy.domain.Customer;
+import com.springframework.projectshoptoy.domain.Order;
 import com.springframework.projectshoptoy.exception.ConflixIdException;
 import com.springframework.projectshoptoy.exception.NotFoundException;
 import com.springframework.projectshoptoy.repositories.AccountRepository;
 import com.springframework.projectshoptoy.repositories.CustomerRepository;
+import com.springframework.projectshoptoy.repositories.OrderDetailRepository;
+import com.springframework.projectshoptoy.repositories.OrderRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 @Service
 public class AccountServiceImpl implements  AccountService{
     private final AccountRepository accountRepository;
     private final CustomerRepository customerRepository;
+    private final OrderRepository orderRepository;
+    private final OrderDetailRepository orderDetailsRepository;
 
     @Override
     public Set<Account> getListAccount() {
@@ -34,10 +42,17 @@ public class AccountServiceImpl implements  AccountService{
         Account account=accountRepository.findById(userName).orElseThrow(()->new NotFoundException("can find id "+userName));
         Customer customer=customerRepository.findCustomerByUserName(userName);
         if(customer!=null){
-
+             List<Order> listOrder=orderRepository.findListOrderByIdCustomer(customer.getCustomerID());
+             listOrder.forEach(order->{
+             	orderDetailsRepository.listAllOrderDetailsByIdOrder(order.getOrderID()).stream()
+                   .map(orderDetailsFind->{
+                 	  orderDetailsRepository.delete(orderDetailsFind);
+                       return null;
+                   }).collect(Collectors.toList());
+             	orderRepository.delete(order);
+             });
             customerRepository.delete(customer);
         }
-
         accountRepository.delete(account);
         return true;
     }
