@@ -2,8 +2,12 @@ package com.springframework.projectshoptoy.service;
 
 import com.springframework.projectshoptoy.domain.Account;
 import com.springframework.projectshoptoy.domain.Customer;
+import com.springframework.projectshoptoy.domain.Order;
 import com.springframework.projectshoptoy.repositories.AccountRepository;
 import com.springframework.projectshoptoy.repositories.CustomerRepository;
+import com.springframework.projectshoptoy.repositories.OrderDetailRepository;
+import com.springframework.projectshoptoy.repositories.OrderRepository;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -12,6 +16,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,12 +30,18 @@ public class CustomerServiceImplTest {
 
     @Mock
     AccountRepository accountRepository;
+    
+    @Mock
+    OrderRepository orderRepository;
+    
+    @Mock
+    OrderDetailRepository orderDetailRepository;
 
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        customerServiceImpl=new CustomerServiceImpl(customerRepository,accountRepository);
+        customerServiceImpl=new CustomerServiceImpl(customerRepository,accountRepository,orderRepository,orderDetailRepository);
     }
 
     @Test
@@ -69,5 +80,11 @@ public class CustomerServiceImplTest {
 
         assertEquals(account.getUserName(),customer.getAccount().getUserName());
 
+    }
+    
+    @Test
+    void deleteCustomerById() throws Exception {
+    	List<Order> orders=orderRepository.findListOrderByIdCustomer("KH101");
+    	assertEquals(1,orders.size());
     }
 }

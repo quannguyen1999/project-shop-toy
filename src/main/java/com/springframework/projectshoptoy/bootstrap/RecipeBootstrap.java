@@ -26,14 +26,11 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     private final OrderDetailRepository orderDetailRepository;
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        loadData();
-
-        loadCategory();
-
+//        loadData();
+//        loadCategory();
     }
 
     private void loadCategory() {
-
         Account account=new Account();
         account.setUserName("admin");
         account.setPassword("fuck");
@@ -50,6 +47,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         }
 
         Customer customer=new Customer();
+        customer.setCustomerID("KH101");
         customer.setAccount(account);
         customer.setAddress("33/16");
         customer.setCity("usa");
@@ -98,7 +96,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 
         ObjectId id=ObjectId.get();
         Order order=new Order();
-        order.setOrderID("ODDT"+id);
+        order.setOrderID("OD");
         order.setShipCity("hồ chí minh");
         order.setCustomer(customer);
         order.setShipRegion("japan");

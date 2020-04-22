@@ -9,6 +9,9 @@ import java.util.Set;
 public interface OrderService {
     //lấy danh sách Order
     Set<Order> getListOrder();
+    
+    //lấy danh sách order by customer id
+    Set<Order> getListOrderByCustomerID(String id);
 
     //lấy danh sách orderDetails
     Set<OrderDetails> getListOrderDetails(String orderID);

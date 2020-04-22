@@ -34,7 +34,8 @@ public class OrderServiceImpl implements OrderService{
         orderRepository.findAll().iterator().forEachRemaining(orderSet::add);
         return orderSet;
     }
-
+    
+   
     @Override
     public Set<OrderDetails> getListOrderDetails(String orderID) {
         log.debug("get list orderDetails");
@@ -173,4 +174,13 @@ public class OrderServiceImpl implements OrderService{
         productRepository.save(product);
         return orderDetailRepository.save(orderDetails);
     }
+
+
+
+	@Override
+	public Set<Order> getListOrderByCustomerID(String id) {
+//		orderRepository.findListOrderByIdCustomer(id)
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
