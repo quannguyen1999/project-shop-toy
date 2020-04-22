@@ -5,6 +5,9 @@ import com.springframework.projectshoptoy.domain.Customer;
 import com.springframework.projectshoptoy.domain.ErrorException;
 import com.springframework.projectshoptoy.service.AccountService;
 import com.springframework.projectshoptoy.service.CustomerService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -13,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Set;
-
+@Api(description = "khách hàng")
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping(CustomerController.BASE_URL)
@@ -23,6 +26,7 @@ public class CustomerController {
     private final CustomerService customerService;
 
     //lấy danh sách custmers
+    @ApiOperation(value = "lấy danh sách custmers")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Set<Customer> getListCustomers(){
@@ -30,6 +34,7 @@ public class CustomerController {
     }
 
     //tìm khách hàng bằng id
+    @ApiOperation(value = "tìm khách hàng bằng id")
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Customer findAccountById( @PathVariable String id){
@@ -37,6 +42,7 @@ public class CustomerController {
     }
 
     //thêm mới customer
+    @ApiOperation(value = "thêm mới customer")
     @PostMapping("/{userName}")
     @ResponseStatus(HttpStatus.CREATED)
     public Customer createNewCustomer(@PathVariable String userName,@Valid @RequestBody Customer customer){
@@ -44,6 +50,7 @@ public class CustomerController {
     }
 
     //cập nhập khách hàng
+    @ApiOperation(value = "cập nhập khách hàng")
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Customer updateAccount(@PathVariable String id,@RequestBody Customer customer){
@@ -51,6 +58,7 @@ public class CustomerController {
     }
 
     //xóa khách hàng bằng id
+    @ApiOperation(value = "xóa khách hàng bằng id")
     @DeleteMapping("/{id}")
     public ResponseEntity<ErrorException> deleteCustomer(@PathVariable String id){
        log.debug("deleting id:"+id);
@@ -62,6 +70,7 @@ public class CustomerController {
     }
 
     //tìm kiếm customer bằng userName
+    @ApiOperation(value = "tìm kiếm customer bằng userName")
     @GetMapping("/userName/{id}")
     public ResponseEntity<Customer> findCustomerByUserName(@PathVariable String id) throws Exception {
         return new ResponseEntity<Customer>(customerService.findCustomerByUserName(id),HttpStatus.OK);

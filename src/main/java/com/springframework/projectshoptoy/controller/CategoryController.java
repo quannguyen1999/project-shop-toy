@@ -3,6 +3,9 @@ package com.springframework.projectshoptoy.controller;
 import com.springframework.projectshoptoy.domain.Category;
 import com.springframework.projectshoptoy.domain.ErrorException;
 import com.springframework.projectshoptoy.service.CategoryService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -11,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Set;
-
+@Api(description = "mặt hàng")
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping(CategoryController.BASE_URL)
@@ -21,6 +24,7 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     //lấy danh sách category
+    @ApiOperation(value = "lấy danh sách mặt hàng")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Set<Category> categories(){
@@ -28,6 +32,7 @@ public class CategoryController {
     }
 
     //thêm mới category
+    @ApiOperation(value = "thêm mới mặt hàng")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Category createNewCategory(@Valid @RequestBody Category category){
@@ -35,6 +40,7 @@ public class CategoryController {
     }
 
     //tìm kiếm category bằng id
+    @ApiOperation(value = "tìm kiếm category bằng id")
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Category findCategoryByID(@PathVariable String id){
@@ -42,6 +48,7 @@ public class CategoryController {
     }
 
     //xóa category bằng id
+    @ApiOperation(value = "xóa category bằng id")
     @DeleteMapping("/{id}")
     public ResponseEntity<ErrorException> deleteCategory(@PathVariable String id){
         log.debug("deleting id:"+id);
@@ -53,6 +60,7 @@ public class CategoryController {
     }
 
     //cập nhập category
+    @ApiOperation(value = "cập nhập category")
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Category updateCategory(@PathVariable String id,@RequestBody Category category){

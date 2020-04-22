@@ -3,6 +3,9 @@ package com.springframework.projectshoptoy.service;
 import com.springframework.projectshoptoy.domain.Account;
 import com.springframework.projectshoptoy.repositories.AccountRepository;
 import com.springframework.projectshoptoy.repositories.CustomerRepository;
+import com.springframework.projectshoptoy.repositories.OrderDetailRepository;
+import com.springframework.projectshoptoy.repositories.OrderRepository;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -22,12 +25,18 @@ public class AccountServiceImplTest {
 
     @Mock
     AccountRepository accountRepository;
+    
+    @Mock
+    OrderRepository orderRepository;
+    
+    @Mock
+    OrderDetailRepository orderDetailsRepository;
 
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        accountServiceImpl=new AccountServiceImpl(accountRepository,customerRepository);
+        accountServiceImpl=new AccountServiceImpl(accountRepository,customerRepository,orderRepository,orderDetailsRepository);
     }
 
     //kiểm tra danh sách account

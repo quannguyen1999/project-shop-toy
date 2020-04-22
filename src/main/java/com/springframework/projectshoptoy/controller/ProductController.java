@@ -5,6 +5,9 @@ import com.springframework.projectshoptoy.domain.Product;
 import com.springframework.projectshoptoy.domain.Supplier;
 import com.springframework.projectshoptoy.service.ProductService;
 import com.springframework.projectshoptoy.service.SupplierService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -13,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Set;
-
+@Api(description = "sản phẩm")
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping(ProductController.BASE_URL)
@@ -23,6 +26,7 @@ public class ProductController {
     private final ProductService productService;
 
     //lấy danh sách Product
+    @ApiOperation(value = "lấy danh sách Product")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Set<Product> products(){
@@ -30,6 +34,7 @@ public class ProductController {
     }
 
     //thêm mới Product
+    @ApiOperation(value = "thêm mới Product")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Product createNewProduct(@Valid @RequestBody Product product){
@@ -37,6 +42,7 @@ public class ProductController {
     }
 
     //tìm kiếm Product bằng id
+    @ApiOperation(value = "tìm kiếm Product bằng id")
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Product findSupplierByID(@PathVariable String id){
@@ -44,6 +50,7 @@ public class ProductController {
     }
 
     //xóa Product bằng id
+    @ApiOperation(value = "xóa Product bằng id")
     @DeleteMapping("/{id}")
     public ResponseEntity<ErrorException> deleteProduct(@PathVariable String id){
         log.debug("deleting id:"+id);
@@ -55,6 +62,7 @@ public class ProductController {
     }
 
     //cập nhập Product
+    @ApiOperation(value = "cập nhập Product")
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Product updateProduct(@PathVariable String id,@RequestBody Product product){

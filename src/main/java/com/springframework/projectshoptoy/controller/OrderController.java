@@ -6,6 +6,9 @@ import com.springframework.projectshoptoy.domain.OrderDetails;
 import com.springframework.projectshoptoy.domain.Supplier;
 import com.springframework.projectshoptoy.service.OrderService;
 import com.springframework.projectshoptoy.service.SupplierService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -16,7 +19,7 @@ import javax.validation.Valid;
 
 import java.util.List;
 import java.util.Set;
-
+@Api(description = "order")
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping(OrderController.BASE_URL)
@@ -26,6 +29,7 @@ public class OrderController {
     private final OrderService orderService;
 
     //lấy danh sách Order
+    @ApiOperation(value = "lấy danh sách Order")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Set<Order> orders(){
@@ -33,6 +37,7 @@ public class OrderController {
     }
 
     //lấy danh sách chi tiết của order
+    @ApiOperation(value = "lấy danh sách chi tiết của order")
     @GetMapping("/{id}/orderDetails")
     @ResponseStatus(HttpStatus.OK)
     public Set<OrderDetails> orderDetails(@PathVariable String id){
@@ -40,6 +45,7 @@ public class OrderController {
     }
 
     //thêm mới Order
+    @ApiOperation(value = "thêm mới Order")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Order createNewOrder(@Valid @RequestBody Order order){
@@ -47,6 +53,7 @@ public class OrderController {
     }
 
     //thêm mới orderDetails
+    @ApiOperation(value = "thêm mới orderDetails ")
     @PostMapping("/{id}/orderDetails")
     @ResponseStatus(HttpStatus.CREATED)
     public OrderDetails createNewOrderDetails(@PathVariable String id,@Valid @RequestBody OrderDetails orderDetails){
@@ -54,6 +61,7 @@ public class OrderController {
     }
 
     //tìm kiếm order bằng id
+    @ApiOperation(value = "tìm kiếm order bằng id")
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Order findOrderByID(@PathVariable String id){
@@ -61,6 +69,7 @@ public class OrderController {
     }
     
     //tìm kiếm danh sách order của khách hàng 
+    @ApiOperation(value = "tìm kiếm danh sách order của khách hàng ")
     @GetMapping("/customer/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Set<Order> getListOrderByCustomerID(@PathVariable String id){
@@ -68,6 +77,7 @@ public class OrderController {
     }
 
     //tìm kiếm 1 orderDetails bằng idOrderDetails
+    @ApiOperation(value = "tìm kiếm 1 orderDetails bằng idOrderDetails")
     @GetMapping("/{id}/orderDetails/{orderDetailsID}")
     @ResponseStatus(HttpStatus.OK)
     public OrderDetails findOrderDetailByID(@PathVariable String id,@PathVariable String orderDetailsID){
@@ -75,6 +85,7 @@ public class OrderController {
     }
 
     //xóa Order bằng id
+    @ApiOperation(value = "xóa Order bằng id")
     @DeleteMapping("/{id}")
     public ResponseEntity<ErrorException> deleteOrder(@PathVariable String id){
         log.debug("deleting id:"+id);
@@ -86,6 +97,7 @@ public class OrderController {
     }
 
     //xóa orderDetails bằng id
+    @ApiOperation(value = "xóa orderDetails bằng id")
     @DeleteMapping("/{id}/orderDetails/{orderDetailsID}")
     public ResponseEntity<ErrorException> deleteOrderDetails(@PathVariable String id,@PathVariable String orderDetailsID){
         log.debug("deleting id:"+id);
@@ -97,6 +109,7 @@ public class OrderController {
     }
 
     //cập nhập Order
+    @ApiOperation(value = "cập nhập Order")
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Order updateOrder(@PathVariable String id,@RequestBody Order order){
@@ -104,6 +117,7 @@ public class OrderController {
     }
 
     //cập nhập orderDetails
+    @ApiOperation(value = "cập nhập orderDetails")
     @PutMapping("/{id}/orderDetails/{orderDetailsID}")
     @ResponseStatus(HttpStatus.OK)
     public OrderDetails updateOrderDetails(@PathVariable String id,@PathVariable String orderDetailsID,@RequestBody OrderDetails orderDetails){

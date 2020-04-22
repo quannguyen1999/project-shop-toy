@@ -6,6 +6,9 @@ import com.springframework.projectshoptoy.domain.ErrorException;
 import com.springframework.projectshoptoy.exception.ConflixIdException;
 import com.springframework.projectshoptoy.service.AccountService;
 import com.springframework.projectshoptoy.service.CustomerService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
@@ -21,6 +24,7 @@ import javax.validation.Valid;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Api(description = "tài khoản")
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping(AccountController.BASE_URL)
@@ -30,6 +34,7 @@ public class AccountController {
     private final AccountService accountService;
 
     //lấy danh sách account
+    @ApiOperation(value = "lấy danh sách tài khoản")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Set<Account> accounts(){
@@ -37,6 +42,7 @@ public class AccountController {
     }
 
     //xóa account bằng id
+    @ApiOperation(value = "xóa tài khoản bằng id")
     @DeleteMapping("/{id}")
     public ResponseEntity<ErrorException> deleteAccount(@PathVariable String id){
         log.debug("deleting id:"+id);
@@ -48,6 +54,7 @@ public class AccountController {
     }
 
     //Tìm kiếm account bằng id
+    @ApiOperation(value = "tìm kiếm tài khoản bằng id")
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Account findAccountById( @PathVariable String id){
@@ -55,6 +62,7 @@ public class AccountController {
     }
 
     //thêm account
+    @ApiOperation(value = "thêm tài khoản")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Account createNewAccount(@Valid @RequestBody Account account){
@@ -62,7 +70,8 @@ public class AccountController {
         return accountService.createNewAccount(account);
     }
 
-    //update accuont
+    //update account
+    @ApiOperation(value = "cập nhập tài khoản")
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Account updateAccount(@PathVariable String id,@RequestBody Account account){
