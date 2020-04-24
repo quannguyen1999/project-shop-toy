@@ -2,11 +2,14 @@ package com.springframework.projectshoptoy.service;
 
 import com.springframework.projectshoptoy.domain.Category;
 import com.springframework.projectshoptoy.domain.Order;
+import com.springframework.projectshoptoy.domain.OrderDetails;
 import com.springframework.projectshoptoy.domain.Product;
 import com.springframework.projectshoptoy.domain.Supplier;
 import com.springframework.projectshoptoy.exception.ConflixIdException;
 import com.springframework.projectshoptoy.exception.NotFoundException;
 import com.springframework.projectshoptoy.repositories.CategoryRepository;
+import com.springframework.projectshoptoy.repositories.OrderDetailRepository;
+import com.springframework.projectshoptoy.repositories.OrderRepository;
 import com.springframework.projectshoptoy.repositories.ProductRepository;
 import com.springframework.projectshoptoy.repositories.SupplierRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +17,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -25,6 +30,8 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final SupplierRepository supplierRepository;
+    private final OrderDetailRepository orderDetailRepository;
+    private final OrderRepository orderRepository;
 
     @Override
     public Set<Product> getListProduct() {
@@ -35,8 +42,28 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean deleteProduct(String userName) {
-        return false;
+    public boolean deleteProduct(String idProduct) {
+    	Product product=productRepository.findById(idProduct)
+    			.orElseThrow(()->new NotFoundException("product not found id "+idProduct));
+    	List<String> listIDOrder=new ArrayList<String>();
+    	orderDetailRepository.listAllOrderDetailsByProductId(idProduct).forEach(orderDetails->{
+    		if(listIDOrder.contains(orderDetails.getOrder().getOrderID())==false) {
+    			listIDOrder.add(orderDetails.getOrder().getOrderID());
+    		}
+    		orderDetailRepository.delete(orderDetails);
+    	});
+    	listIDOrder.forEach(idOrder->{
+    		Optional<Order> order=orderRepository.findById(idOrder);
+    		if(order.isPresent()==true) {
+    			int totalOrder=orderDetailRepository.listAllOrderDetailsByIdOrder(order.get().getOrderID())
+    			.size();
+    			if(totalOrder<=0) {
+    				orderRepository.delete(order.get());
+    			}
+    		}
+    	});
+    	productRepository.delete(product);
+        return true;
     }
 
     @Override

@@ -26,8 +26,8 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     private final OrderDetailRepository orderDetailRepository;
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-//        loadData();
-//        loadCategory();
+        loadData();
+        loadCategory();
     }
 
     private void loadCategory() {
@@ -74,7 +74,9 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         supplier.setPhone("113");
         supplierRepository.save(supplier);
 
+        
         Product product=new Product();
+        product.setProductID("P"+ObjectId.get().toString());
         product.setQuantityInStock(10);
         product.setProductName("cơm sườn");
         product.setMoTa("hết hàng");
@@ -85,6 +87,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         productRepository.save(product);
 
         Product product2=new Product();
+        product2.setProductID("P2"+ObjectId.get().toString());
         product2.setQuantityInStock(10);
         product2.setProductName("bún sườn");
         product2.setMoTa("còn hàng");
@@ -94,7 +97,6 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         product2.setSupplier(supplier);
         productRepository.save(product2);
 
-        ObjectId id=ObjectId.get();
         Order order=new Order();
         order.setOrderID("OD");
         order.setShipCity("hồ chí minh");

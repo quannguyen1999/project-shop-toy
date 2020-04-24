@@ -10,7 +10,7 @@ public interface ProductService {
     Set<Product> getListProduct();
 
     //xóa Product
-    boolean deleteProduct(String userName);
+    boolean deleteProduct(String idProduct);
 
     //tìm kiếm Product bằng userName
     Product findProductByID(String id);

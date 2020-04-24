@@ -54,6 +54,7 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public ResponseEntity<ErrorException> deleteProduct(@PathVariable String id){
         log.debug("deleting id:"+id);
+        productService.deleteProduct(id);
 //        categoryService.deleteCategory(id);
         ErrorException errorException=new ErrorException();
         errorException.setStatus(HttpStatus.OK.toString());
