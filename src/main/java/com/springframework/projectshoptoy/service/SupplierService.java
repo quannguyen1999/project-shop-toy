@@ -10,7 +10,7 @@ public interface SupplierService {
     Set<Supplier> getListSupplier();
 
     //xóa Supplier
-    boolean deleteSupplier(String userName);
+    boolean deleteSupplier(String idSupplier);
 
     //tìm kiếm Supplier bằng userName
     Supplier findSupplierById(String Id);

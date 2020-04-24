@@ -54,7 +54,7 @@ public class SupplierController {
     @DeleteMapping("/{id}")
     public ResponseEntity<ErrorException> deleteSupplier(@PathVariable String id){
         log.debug("deleting id:"+id);
-//        categoryService.deleteCategory(id);
+        supplierService.deleteSupplier(id);
         ErrorException errorException=new ErrorException();
         errorException.setStatus(HttpStatus.OK.toString());
         errorException.setError("delete success");
