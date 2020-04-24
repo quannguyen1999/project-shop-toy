@@ -52,7 +52,7 @@ public class CategoryController {
     @DeleteMapping("/{id}")
     public ResponseEntity<ErrorException> deleteCategory(@PathVariable String id){
         log.debug("deleting id:"+id);
-//        categoryService.deleteCategory(id);
+        categoryService.deleteCategory(id);
         ErrorException errorException=new ErrorException();
         errorException.setStatus(HttpStatus.OK.toString());
         errorException.setError("delete success");

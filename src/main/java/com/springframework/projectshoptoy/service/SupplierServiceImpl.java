@@ -6,6 +6,8 @@ import com.springframework.projectshoptoy.exception.NotFoundException;
 import com.springframework.projectshoptoy.repositories.SupplierRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -45,6 +47,7 @@ public class SupplierServiceImpl implements   SupplierService{
                 throw new ConflixIdException("conflix id");
             }
         }
+        supplier.setSupplierID("SL"+ObjectId.get().toString());
         return  supplierRepository.save(supplier);
     }
 

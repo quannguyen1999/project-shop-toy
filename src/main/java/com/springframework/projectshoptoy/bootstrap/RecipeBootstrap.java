@@ -26,8 +26,8 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     private final OrderDetailRepository orderDetailRepository;
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        loadData();
-        loadCategory();
+//        loadData();
+//        loadCategory();
     }
 
     private void loadCategory() {
@@ -47,7 +47,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         }
 
         Customer customer=new Customer();
-        customer.setCustomerID("KH101");
+        customer.setCustomerID("KH"+ObjectId.get().toString());
         customer.setAccount(account);
         customer.setAddress("33/16");
         customer.setCity("usa");
@@ -60,6 +60,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         }
 
         Category category=new Category();
+        category.setCategoryID("CT"+ObjectId.get().toString());
         category.setCategoryName("abc");
         category.setPicture("1.png");
         category.setDescription("mổ tả");
@@ -69,6 +70,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         categoryRepository.save(category);
 
         Supplier supplier=new Supplier();
+        supplier.setSupplierID("SL"+ObjectId.get().toString());
         supplier.setCompanyName("abc");
         supplier.setAddress("33/16");
         supplier.setPhone("113");
@@ -98,7 +100,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         productRepository.save(product2);
 
         Order order=new Order();
-        order.setOrderID("OD");
+        order.setOrderID("OD"+ObjectId.get().toString());
         order.setShipCity("hồ chí minh");
         order.setCustomer(customer);
         order.setShipRegion("japan");
@@ -107,6 +109,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         orderRepository.save(order);
 
         OrderDetails orderDetails=new OrderDetails();
+        orderDetails.setOrderDetailID("ODDT"+ObjectId.get().toString());
         orderDetails.setDiscount(10);
         orderDetails.setProduct(product);
         orderDetails.setQuanity(10);
@@ -115,6 +118,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         orderDetailRepository.save(orderDetails);
 
         OrderDetails orderDetails1=new OrderDetails();
+        orderDetails1.setOrderDetailID("ODDT"+ObjectId.get().toString());
         orderDetails1.setDiscount(20);
         orderDetails1.setProduct(product2);
         orderDetails1.setQuanity(10);

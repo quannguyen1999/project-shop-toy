@@ -14,6 +14,8 @@ import com.springframework.projectshoptoy.repositories.ProductRepository;
 import com.springframework.projectshoptoy.repositories.SupplierRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.bson.types.ObjectId;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.stereotype.Service;
 
@@ -89,6 +91,7 @@ public class ProductServiceImpl implements ProductService {
         }
         Supplier supplier=supplierRepository.findById(product.getSupplier().getSupplierID()).orElseThrow(()->new NotFoundException("Not found id supplier "+product.getSupplier().getSupplierID()));
         product.setSupplier(supplier);
+        product.setProductID("PT"+ObjectId.get().toString());
         return productRepository.save(product);
     }
 

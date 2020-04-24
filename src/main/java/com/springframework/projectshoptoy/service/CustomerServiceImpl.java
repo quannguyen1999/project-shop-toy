@@ -12,6 +12,8 @@ import com.springframework.projectshoptoy.repositories.OrderRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -79,6 +81,7 @@ public class CustomerServiceImpl implements  CustomerService{
         if(customer1!=null){
             throw  new ConflixIdException("userName has exists account customer:"+customer1.getCustomerID());
         }
+        customer.setCustomerID("CO"+ObjectId.get().toString());
         customer.setAccount(account);
         return  customerRepository.save(customer);
     }
