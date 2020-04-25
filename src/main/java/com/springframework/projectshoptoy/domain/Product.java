@@ -16,17 +16,17 @@ public class Product {
 
     private boolean discontinued;
 
-    @NotEmpty
+    @NotEmpty(message = "moTa can not empty")
     private String moTa;
 
-    @NotEmpty
+    @NotEmpty(message = "productName can not empty")
     private String productName;
 
-    @NotNull
+    @NotNull(message = "quantityInStock can not empty")
     @Min(value = 0)
     private int quantityInStock;
 
-    @NotNull
+    @NotNull(message = "unitPrice can not empty")
     @Min(value = 0)
     private double unitPrice;
 
