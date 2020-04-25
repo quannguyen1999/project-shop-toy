@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Array;
@@ -24,20 +25,22 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
     private final OrderDetailRepository orderDetailRepository;
+    private final PasswordEncoder passwordEncoder;
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        loadData();
-        loadCategory();
+//        loadData();
+//        loadCategory();
     }
 
     private void loadCategory() {
         Account account=new Account();
         account.setUserName("admin");
-        account.setPassword("fuck");
+        account.setPassword(passwordEncoder.encode("fuck"));
+        account.setAccType(true);
 
         Account account1=new Account();
         account1.setUserName("employee");
-        account1.setPassword("123");
+        account1.setPassword(passwordEncoder.encode("123"));
         if(accountRepository.findById(account.getUserName()).isPresent()==false){
             accountRepository.save(account);
         }
