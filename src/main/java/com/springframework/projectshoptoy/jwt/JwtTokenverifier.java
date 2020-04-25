@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.crypto.SecretKey;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -25,24 +26,26 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-
+import lombok.RequiredArgsConstructor;
+@RequiredArgsConstructor
 public class JwtTokenverifier extends OncePerRequestFilter{
+	private final SecretKey secretKey;
+	private final JwtConfig jwtConfig;
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		String authorizationHeader=request.getHeader("Authorization");
+		String authorizationHeader=request.getHeader(jwtConfig.getAuthorizationHeader());
 
-		if(Strings.isNullOrEmpty(authorizationHeader) || !authorizationHeader.startsWith("Bearer ")) {
+		if(Strings.isNullOrEmpty(authorizationHeader) || !authorizationHeader.startsWith(jwtConfig.getTokenPrefix())) {
 			filterChain.doFilter(request, response);
 			return;
 		}
 
-		String token=authorizationHeader.replace("Bearer ", "");
+		String token=authorizationHeader.replace(jwtConfig.getTokenPrefix(), "");
 		try {
-			String secretKey="securesecuresecuresecuresecuresecuresecuresecure";
 			System.out.println("1");
 			Jws<Claims> claimsJws=Jwts.parser()
-					.setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes()))
+					.setSigningKey(secretKey)
 					.parseClaimsJws(token);
 				
 			System.out.println("2");

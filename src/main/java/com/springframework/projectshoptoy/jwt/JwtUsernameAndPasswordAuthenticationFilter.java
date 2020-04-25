@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Date;
 
+import javax.crypto.SecretKey;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +29,8 @@ import lombok.extern.slf4j.Slf4j;
 public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter{
 	//applicationManager dùng để xác minh userName và password
 	private final AuthenticationManager authenticationManager;
-
+	private final JwtConfig jwtConfig;
+	private final SecretKey secretKey;
 	//nơi này để xác minh
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
@@ -61,7 +63,6 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 			Authentication authResult) throws IOException, ServletException {
 		
 		//password key trong token
-		String key="securesecuresecuresecuresecuresecuresecuresecure";
 		
 		//tạo token
 		String token=Jwts.builder()
@@ -71,13 +72,13 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 				.claim("authorities", authResult.getAuthorities())
 				//ngày kích hoạt token
 				.setIssuedAt(new Date())
-				//ngày hết hạn token
-				.setExpiration(java.sql.Date.valueOf(LocalDate.now().plusWeeks(2)))
+				//ngày hết hạn token (coi trong application.properties)
+				.setExpiration(java.sql.Date.valueOf(LocalDate.now().plusWeeks(Integer.parseInt(jwtConfig.getTokenExpirationAfterDays()))))
 				//hash key 
-				.signWith(Keys.hmacShaKeyFor(key.getBytes()))
+				.signWith(secretKey)
 				.compact();
 
-		response.addHeader("Authorization","Bearer "+token);
+		response.addHeader("Authorization",jwtConfig.getTokenPrefix()+token);
 
 		//remember delte this
 		//super.successfulAuthentication(request, response, chain, authResult);
