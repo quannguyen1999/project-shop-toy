@@ -76,12 +76,18 @@ public class CustomerServiceImpl implements  CustomerService{
 
     @Override
     public Customer createNewCustomer(String userName,Customer customer) {
-        Account account=accountRepository.findById(userName).orElseThrow(()->new NotFoundException("not found userName "+userName));
+    	if(customer.getCustomerID()!=null) {
+    		Optional<Customer> customerFind=customerRepository.findById(customer.getCustomerID());
+        	if(customerFind.isPresent()==true) {
+        		throw new ConflixIdException("customer id had exists");
+        	}
+    	}
+    	Account account=accountRepository.findById(userName).orElseThrow(()->new NotFoundException("not found userName "+userName));
         Customer customer1=customerRepository.findCustomerByUserName(userName);
         if(customer1!=null){
-            throw  new ConflixIdException("userName has exists account customer:"+customer1.getCustomerID());
+            throw  new ConflixIdException("userName has exists account customer:"+customer1.getCustomerID()+" ,please provide different userName");
         }
-        customer.setCustomerID("CO"+ObjectId.get().toString());
+        customer.setCustomerID("CU"+ObjectId.get().toString());
         customer.setAccount(account);
         return  customerRepository.save(customer);
     }
