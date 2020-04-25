@@ -66,8 +66,8 @@ public class AccountServiceImpl implements  AccountService{
     public Account createNewAccount(Account account) {
         Optional<Account> account1=accountRepository.findById(account.getUserName());
         if(account1.isPresent()==true){
-            log.error("conflix id");
-            throw new ConflixIdException("conflix id");
+            log.error("conflix username");
+            throw new ConflixIdException("conflix username");
         }
         return  accountRepository.save(account);
     }

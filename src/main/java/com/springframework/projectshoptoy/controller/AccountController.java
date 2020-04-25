@@ -66,7 +66,6 @@ public class AccountController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Account createNewAccount(@Valid @RequestBody Account account){
-//        return account;
         return accountService.createNewAccount(account);
     }
 
