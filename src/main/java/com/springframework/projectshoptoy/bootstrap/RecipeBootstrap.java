@@ -26,8 +26,8 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     private final OrderDetailRepository orderDetailRepository;
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-//        loadData();
-//        loadCategory();
+        loadData();
+        loadCategory();
     }
 
     private void loadCategory() {

@@ -15,11 +15,11 @@ public class OrderDetails {
     @Id
     private String orderDetailID;
 
-    @NotNull
+    @NotNull(message = "discount can't null")
     @Min(value = 0)
     private float discount;
 
-    @NotNull
+    @NotNull(message = "quanity can't null")
     @Min(value = 0)
     private int quanity;
 
