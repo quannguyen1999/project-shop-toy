@@ -32,7 +32,12 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter{
 	private final ApplicationUserService applicationUserService;
 	private final JwtConfig jwtConfig;
 	private final SecretKey secretKey;
-	
+	private static final String[] AUTH_WHITELIST = {
+	        "/swagger-resources/**",
+	        "/swagger-ui.html",
+	        "/v2/api-docs",
+	        "/webjars/**"
+	};
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
@@ -45,12 +50,10 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter{
 			//nơi để xác minh token
 			.addFilterAfter(new JwtTokenverifier(secretKey,jwtConfig),JwtUsernameAndPasswordAuthenticationFilter.class)
 			.authorizeRequests() 
-			.antMatchers("/swagger-ui.html").permitAll() // cho phép truy cập
+			.antMatchers(AUTH_WHITELIST).permitAll() // cho phép truy cập
 			.antMatchers("/api/**").hasAnyRole(ADMIN.name(),EMP.name())
 			.anyRequest()	//còn lại bấy cứ request nào
-			.authenticated() //đều phải xác thực
-			.and() //và 
-			.httpBasic();//hiện form để điền
+			.authenticated(); //đều phải xác thực
 	}
 	
 	@Bean

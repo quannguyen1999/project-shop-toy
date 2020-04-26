@@ -33,11 +33,11 @@ public class AccountServiceImplTest {
     OrderDetailRepository orderDetailsRepository;
 
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.initMocks(this);
-        accountServiceImpl=new AccountServiceImpl(accountRepository,customerRepository,orderRepository,orderDetailsRepository);
-    }
+//    @BeforeEach
+//    void setUp() {
+//        MockitoAnnotations.initMocks(this);
+//        accountServiceImpl=new AccountServiceImpl(accountRepository,customerRepository,orderRepository,orderDetailsRepository);
+//    }
 
     //kiểm tra danh sách account
     @Test

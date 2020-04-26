@@ -51,7 +51,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 
         Customer customer=new Customer();
         customer.setCustomerID("KH"+ObjectId.get().toString());
-        customer.setAccount(account);
+        customer.setAccount(account1);
         customer.setAddress("33/16");
         customer.setCity("usa");
         customer.setEmail("employee@gmail.com");
