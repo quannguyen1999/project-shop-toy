@@ -32,6 +32,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter{
 	private final ApplicationUserService applicationUserService;
 	private final JwtConfig jwtConfig;
 	private final SecretKey secretKey;
+	//những trang cho phép truy cập
 	private static final String[] AUTH_WHITELIST = {
 	        "/swagger-resources/**",
 	        "/swagger-ui.html",

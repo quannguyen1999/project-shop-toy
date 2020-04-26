@@ -28,8 +28,8 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     private final PasswordEncoder passwordEncoder;
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-//        loadData();
-//        loadCategory();
+        loadData();
+        loadCategory();
     }
 
     private void loadCategory() {
