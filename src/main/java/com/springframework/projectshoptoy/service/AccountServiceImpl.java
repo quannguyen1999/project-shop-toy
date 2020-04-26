@@ -67,8 +67,7 @@ public class AccountServiceImpl implements  AccountService{
 
 	@Override
 	public Account createNewAccount(Account account) {
-		Optional<Account> account1=accountRepository.findById(account.getUserName());
-		if(account1.isPresent()==true){
+		if(accountRepository.findById(account.getUserName()).isPresent()==true){
 			log.error("conflix username");
 			throw new ConflixIdException("conflix username");
 		}
