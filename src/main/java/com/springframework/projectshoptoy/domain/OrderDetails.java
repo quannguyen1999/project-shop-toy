@@ -1,20 +1,24 @@
 package com.springframework.projectshoptoy.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
+import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
-@Document
-public class OrderDetails {
-    @Id
-    private String orderDetailID;
-
+@Embeddable
+@AllArgsConstructor
+@NoArgsConstructor
+public class OrderDetails implements Serializable{
     @NotNull(message = "discount can't null")
     @Min(value = 0)
     private float discount;
@@ -25,9 +29,7 @@ public class OrderDetails {
 
     private int totalAmount;
 
-    @DBRef
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "productID")
     private Product product;
-
-    @DBRef
-    private Order order;
 }

@@ -1,7 +1,23 @@
-package com.springframework.projectshoptoy.bootstrap;
+package com.springframework.projectshoptoy;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import com.springframework.projectshoptoy.dao.MyEntityManager;
-import com.springframework.projectshoptoy.domain.*;
+import com.springframework.projectshoptoy.domain.Account;
+import com.springframework.projectshoptoy.domain.Category;
+import com.springframework.projectshoptoy.domain.Customer;
+import com.springframework.projectshoptoy.domain.Order;
+import com.springframework.projectshoptoy.domain.OrderDetails;
+import com.springframework.projectshoptoy.domain.Product;
+import com.springframework.projectshoptoy.domain.Supplier;
+import com.springframework.projectshoptoy.exception.ConflixIdException;
+import com.springframework.projectshoptoy.exception.NotFoundException;
 import com.springframework.projectshoptoy.service.AccountService;
 import com.springframework.projectshoptoy.service.AccountServiceImpl;
 import com.springframework.projectshoptoy.service.CategoryService;
@@ -15,41 +31,30 @@ import com.springframework.projectshoptoy.service.ProductServiceImpl;
 import com.springframework.projectshoptoy.service.SupplierService;
 import com.springframework.projectshoptoy.service.SupplierServiceImpl;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
+public class TestConsole {
+	public static void main(String[] args) {
+//		MyEntityManager myEntityManager=new MyEntityManager();
+//						init();
+//		//		MyEntityManager myEntityManager=new MyEntityManager();
+//		SupplierService supplierService=new SupplierServiceImpl();
+//		ProductService productService=new ProductServiceImpl();
+//		CategoryService categoryService=new CategoryServiceImpl();
+//		OrderService orderService=new OrderServiceImpl();
+//		CustomerService customerService=new CustomerServiceImpl();
+//		AccountService accountService=new AccountServiceImpl();
+////		
+//		System.out.println(accountService.deleteAccount("admin"));
+	}
 
-import java.lang.reflect.Array;
-import java.time.LocalDate;
-import java.util.Arrays;
 
-@Slf4j
-@Component
-public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
-	@Autowired
-	private SupplierService supplierService;//=new SupplierServiceImpl();
-	@Autowired
-	private ProductService productService;//=new ProductServiceImpl();
-	@Autowired
-	private CategoryService categoryService;//=new CategoryServiceImpl();
-	@Autowired
-	private OrderService orderService;//=new OrderServiceImpl();
-	@Autowired
-	private CustomerService customerService;//=new CustomerServiceImpl();
-	@Autowired
-	private AccountService accountService;//=new AccountServiceImpl();
-	
-    @Override
-    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-//        loadCategory();
-    }
+	public static void init() {
+		SupplierService supplierService=new SupplierServiceImpl();
+		ProductService productService=new ProductServiceImpl();
+		CategoryService categoryService=new CategoryServiceImpl();
+		OrderService orderService=new OrderServiceImpl();
+		CustomerService customerService=new CustomerServiceImpl();
+		AccountService accountService=new AccountServiceImpl();
 
-    private void loadCategory() {
 		Account account=new Account("admin", "Khanhhoa123#",true );
 		Customer customer=new Customer("33/16 duong huynh van", "ho chi minh", "ngeuyan@gmail.com", "quan", "nguyen");
 		Category category=new Category("caasdasd", "fuck fuck", "picture.jpg");
@@ -60,7 +65,6 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 		OrderDetails orderDetails2=new OrderDetails(20, 20, 10, product2);
 		Order order=new Order(LocalDate.of(2020, 12, 12), "hoi chiu minh", "ha noi", LocalDate.of(2020, 12, 12)
 				, customer, Arrays.asList(orderDetails,orderDetails2));
-
 		accountService.createNewAccount(account);
 		customerService.createNewCustomer(account.getUserName(), customer);
 		categoryService.createNewCategory(category);
@@ -68,5 +72,5 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 		productService.createNewProduct(product);
 		productService.createNewProduct(product2);
 		orderService.createNewOrder(order);
-    }
+	}
 }

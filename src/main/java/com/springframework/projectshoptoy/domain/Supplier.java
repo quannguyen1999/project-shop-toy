@@ -1,17 +1,23 @@
 package com.springframework.projectshoptoy.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
 @Data
-@Document
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "suppliers")
 public class Supplier {
-    @Id
+	@Id
     private String supplierID;
 
     @NotEmpty
@@ -23,4 +29,15 @@ public class Supplier {
 
     @NotEmpty
     private String address;
+
+	public Supplier(
+			@NotEmpty @Pattern(regexp = "[0-9]{10}+", message = "phone invalid (must have length 10 number)") String phone,
+			@NotEmpty String companyName, @NotEmpty String address) {
+		super();
+		this.phone = phone;
+		this.companyName = companyName;
+		this.address = address;
+	}
+    
+    
 }

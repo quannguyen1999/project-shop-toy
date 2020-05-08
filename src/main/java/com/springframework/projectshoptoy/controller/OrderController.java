@@ -36,13 +36,13 @@ public class OrderController {
         return orderService.getListOrder();
     }
 
-    //lấy danh sách chi tiết của order
-    @ApiOperation(value = "lấy danh sách chi tiết của order")
-    @GetMapping("/{id}/orderDetails")
-    @ResponseStatus(HttpStatus.OK)
-    public Set<OrderDetails> orderDetails(@PathVariable String id){
-        return orderService.getListOrderDetails(id);
-    }
+//    //lấy danh sách chi tiết của order
+//    @ApiOperation(value = "lấy danh sách chi tiết của order")
+//    @GetMapping("/{id}/orderDetails")
+//    @ResponseStatus(HttpStatus.OK)
+//    public Set<OrderDetails> orderDetails(@PathVariable String id){
+//        return orderService.getListOrderDetails(id);
+//    }
 
     //thêm mới Order
     @ApiOperation(value = "thêm mới Order")
@@ -52,13 +52,13 @@ public class OrderController {
         return orderService.createNewOrder(order);
     }
 
-    //thêm mới orderDetails
-    @ApiOperation(value = "thêm mới orderDetails ")
-    @PostMapping("/{id}/orderDetails")
-    @ResponseStatus(HttpStatus.CREATED)
-    public OrderDetails createNewOrderDetails(@PathVariable String id,@Valid @RequestBody OrderDetails orderDetails){
-        return orderService.createNewOrderDetail(id,orderDetails);
-    }
+//    //thêm mới orderDetails
+//    @ApiOperation(value = "thêm mới orderDetails ")
+//    @PostMapping("/{id}/orderDetails")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public OrderDetails createNewOrderDetails(@PathVariable String id,@Valid @RequestBody OrderDetails orderDetails){
+//        return orderService.createNewOrderDetail(id,orderDetails);
+//    }
 
     //tìm kiếm order bằng id
     @ApiOperation(value = "tìm kiếm order bằng id")
@@ -76,13 +76,13 @@ public class OrderController {
     	return orderService.getListOrderByCustomerID(id);
     }
 
-    //tìm kiếm 1 orderDetails bằng idOrderDetails
-    @ApiOperation(value = "tìm kiếm 1 orderDetails bằng idOrderDetails")
-    @GetMapping("/{id}/orderDetails/{orderDetailsID}")
-    @ResponseStatus(HttpStatus.OK)
-    public OrderDetails findOrderDetailByID(@PathVariable String id,@PathVariable String orderDetailsID){
-        return orderService.findOrderDetailById(id,orderDetailsID);
-    }
+//    //tìm kiếm 1 orderDetails bằng idOrderDetails
+//    @ApiOperation(value = "tìm kiếm 1 orderDetails bằng idOrderDetails")
+//    @GetMapping("/{id}/orderDetails/{orderDetailsID}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public OrderDetails findOrderDetailByID(@PathVariable String id,@PathVariable String orderDetailsID){
+//        return orderService.findOrderDetailById(id,orderDetailsID);
+//    }
 
     //xóa Order bằng id
     @ApiOperation(value = "xóa Order bằng id")
@@ -96,17 +96,17 @@ public class OrderController {
         return new ResponseEntity<ErrorException>(errorException,HttpStatus.OK);
     }
 
-    //xóa orderDetails bằng id
-    @ApiOperation(value = "xóa orderDetails bằng id")
-    @DeleteMapping("/{id}/orderDetails/{orderDetailsID}")
-    public ResponseEntity<ErrorException> deleteOrderDetails(@PathVariable String id,@PathVariable String orderDetailsID){
-        log.debug("deleting id:"+id);
-        orderService.deleteOrderDetails(id,orderDetailsID);
-        ErrorException errorException=new ErrorException();
-        errorException.setStatus(HttpStatus.OK.toString());
-        errorException.setError("delete success");
-        return new ResponseEntity<ErrorException>(errorException,HttpStatus.OK);
-    }
+//    //xóa orderDetails bằng id
+//    @ApiOperation(value = "xóa orderDetails bằng id")
+//    @DeleteMapping("/{id}/orderDetails/{orderDetailsID}")
+//    public ResponseEntity<ErrorException> deleteOrderDetails(@PathVariable String id,@PathVariable String orderDetailsID){
+//        log.debug("deleting id:"+id);
+//        orderService.deleteOrderDetails(id,orderDetailsID);
+//        ErrorException errorException=new ErrorException();
+//        errorException.setStatus(HttpStatus.OK.toString());
+//        errorException.setError("delete success");
+//        return new ResponseEntity<ErrorException>(errorException,HttpStatus.OK);
+//    }
 
     //cập nhập Order
     @ApiOperation(value = "cập nhập Order")
@@ -116,12 +116,12 @@ public class OrderController {
         return orderService.updateOrder(id,order);
     }
 
-    //cập nhập orderDetails
-    @ApiOperation(value = "cập nhập orderDetails")
-    @PutMapping("/{id}/orderDetails/{orderDetailsID}")
-    @ResponseStatus(HttpStatus.OK)
-    public OrderDetails updateOrderDetails(@PathVariable String id,@PathVariable String orderDetailsID,@RequestBody OrderDetails orderDetails){
-        return orderService.updateOrderDetails(id,orderDetailsID,orderDetails);
-    }
+//    //cập nhập orderDetails
+//    @ApiOperation(value = "cập nhập orderDetails")
+//    @PutMapping("/{id}/orderDetails/{orderDetailsID}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public OrderDetails updateOrderDetails(@PathVariable String id,@PathVariable String orderDetailsID,@RequestBody OrderDetails orderDetails){
+//        return orderService.updateOrderDetails(id,orderDetailsID,orderDetails);
+//    }
 
 }

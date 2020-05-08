@@ -2,7 +2,6 @@ package com.springframework.projectshoptoy.controller;
 
 import com.springframework.projectshoptoy.domain.Account;
 import com.springframework.projectshoptoy.exception.ConflixIdException;
-import com.springframework.projectshoptoy.repositories.AccountRepository;
 import com.springframework.projectshoptoy.service.AccountService;
 import com.springframework.projectshoptoy.service.CustomerService;
 import org.junit.jupiter.api.BeforeEach;

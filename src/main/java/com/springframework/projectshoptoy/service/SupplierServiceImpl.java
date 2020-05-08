@@ -1,96 +1,90 @@
 package com.springframework.projectshoptoy.service;
 
-import com.springframework.projectshoptoy.domain.Category;
+import com.springframework.projectshoptoy.dao.MyEntityManager;
+import com.springframework.projectshoptoy.domain.Supplier;
 import com.springframework.projectshoptoy.domain.Order;
 import com.springframework.projectshoptoy.domain.Product;
-import com.springframework.projectshoptoy.domain.Supplier;
 import com.springframework.projectshoptoy.exception.ConflixIdException;
 import com.springframework.projectshoptoy.exception.NotFoundException;
-import com.springframework.projectshoptoy.repositories.OrderDetailRepository;
-import com.springframework.projectshoptoy.repositories.OrderRepository;
-import com.springframework.projectshoptoy.repositories.ProductRepository;
-import com.springframework.projectshoptoy.repositories.SupplierRepository;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
-@RequiredArgsConstructor
 @Slf4j
 @Service
 public class SupplierServiceImpl implements   SupplierService{
-    private final SupplierRepository supplierRepository;
-    private final ProductRepository productRepository;
-    private final OrderRepository orderRepository;
-    private final OrderDetailRepository orderDetailRepository;
+	@Autowired
+	private MyEntityManager myEntityManager;
+	
+	public SupplierServiceImpl() {
+		myEntityManager=new MyEntityManager();
+	}
 
     @Override
     public Set<Supplier> getListSupplier() {
-        log.debug("get list supplier");
-        Set<Supplier> supplierSet=new HashSet<>();
-        supplierRepository.findAll().iterator().forEachRemaining(supplierSet::add);
+        log.debug("get list Supplier");
+		Set<Supplier> supplierSet=new HashSet<>();
+		myEntityManager.getAllData(new Supplier()).forEach(supplierSet::add);
         return supplierSet;
     }
 
     @Override
     public boolean deleteSupplier(String idSupplier) {
-    	Supplier supplierFind=supplierRepository.findById(idSupplier)
-    			.orElseThrow(()->new NotFoundException("category not found id "+idSupplier));
-    	productRepository.listAllProductByIdCategory(idSupplier).forEach(product->{
-    		Optional<Product> productFind=productRepository.findById(product.getProductID());
-    		if(productFind.isPresent()==true) {
-    			List<String> listIDOrder=new ArrayList<String>();
-    	    	orderDetailRepository.listAllOrderDetailsByProductId(productFind.get().getProductID()).forEach(orderDetails->{
-    	    		if(listIDOrder.contains(orderDetails.getOrder().getOrderID())==false) {
-    	    			listIDOrder.add(orderDetails.getOrder().getOrderID());
-    	    		}
-    	    		orderDetailRepository.delete(orderDetails);
-    	    	});
-    	    	listIDOrder.forEach(idOrder->{
-    	    		Optional<Order> order=orderRepository.findById(idOrder);
-    	    		if(order.isPresent()==true) {
-    	    			int totalOrder=orderDetailRepository.listAllOrderDetailsByIdOrder(order.get().getOrderID())
-    	    			.size();
-    	    			if(totalOrder<=0) {
-    	    				orderRepository.delete(order.get());
-    	    			}
-    	    		}
-    	    	});
-    	    	productRepository.delete(product);
-    		}
-    	});
-    	supplierRepository.delete(supplierFind);
-        return true;
+    	if(idSupplier==null) {
+			throw new NotFoundException("Id Supplier can't be null");
+		}
+		Supplier Supplier=findSupplierById(idSupplier);
+		List<Product> listProduct=myEntityManager.query("db.products.find({'supplierID':'"+idSupplier+"'})",new Product());
+		listProduct.forEach(t->{
+			Set<Order> orderSet=new HashSet<>();
+			myEntityManager.getAllData(new Order()).forEach(orderSet::add);
+			orderSet.forEach(order->{
+				for(int i=0;i<order.getOrderDetails().size();i++) {
+					if(order.getOrderDetails().get(i).getProduct().getProductID().equals(t.getProductID())) {
+						order.getOrderDetails().remove(order.getOrderDetails().get(i));
+					}
+				}
+				if(order.getOrderDetails().size()<=0) {
+					myEntityManager.deleteT(order, order.getOrderID());
+				}else {
+					myEntityManager.updateT(order,order.getOrderID());
+				}
+			});
+			myEntityManager.deleteT(t, t.getProductID());
+		});
+		return myEntityManager.deleteT(Supplier,Supplier.getSupplierID());
     }
 
     @Override
     public Supplier findSupplierById(String Id) {
-        return supplierRepository.findById(Id).orElseThrow(() -> new NotFoundException("can find id " + Id));
+        return (Supplier) myEntityManager.findById(new Supplier(), Id).orElseThrow(()->new NotFoundException("can find id Supplier"+Id));
     }
 
     @Override
     public Supplier createNewSupplier(Supplier supplier) {
         if(supplier.getSupplierID()!=null){
-            Optional<Supplier> supplier1=supplierRepository.findById(supplier.getSupplierID());
-            if(supplier1.isPresent()==true){
-                log.error("conflix id");
-                throw new ConflixIdException("conflix id");
-            }
+        	if(myEntityManager.findById(new Supplier(),supplier.getSupplierID()).isPresent()) {
+				throw new ConflixIdException("supplier id had exists");
+			}
         }
         supplier.setSupplierID("SL"+ObjectId.get().toString());
-        return  supplierRepository.save(supplier);
+        boolean result=myEntityManager.addT(supplier,supplier.getSupplierID());
+		if(result==false) {
+			return null;
+		}
+		return supplier;
     }
 
     @Override
     public Supplier updateSupplier(String id, Supplier supplier) {
-        Supplier supplierFind=supplierRepository.findById(id).orElseThrow(()->new NotFoundException("Not found id "+id));
+        Supplier supplierFind=findSupplierById(id);
+        if(supplierFind==null) {
+        	throw new NotFoundException("Not found that id supplier");
+        }
         if(supplier.getAddress()!=null){
             supplierFind.setAddress(supplier.getAddress());
         }
@@ -100,6 +94,8 @@ public class SupplierServiceImpl implements   SupplierService{
         if(supplier.getPhone()!=null){
             supplierFind.setPhone(supplier.getPhone());
         }
-        return supplierRepository.save(supplierFind);
+        return myEntityManager.updateT(supplierFind, supplierFind.getSupplierID()).get();
     }
+
+	
 }

@@ -1,19 +1,17 @@
 package com.springframework.projectshoptoy.service;
 
+import com.springframework.projectshoptoy.dao.MyEntityManager;
 import com.springframework.projectshoptoy.domain.Account;
 import com.springframework.projectshoptoy.domain.Category;
+import com.springframework.projectshoptoy.domain.Customer;
 import com.springframework.projectshoptoy.domain.Order;
 import com.springframework.projectshoptoy.domain.Product;
 import com.springframework.projectshoptoy.exception.ConflixIdException;
 import com.springframework.projectshoptoy.exception.NotFoundException;
-import com.springframework.projectshoptoy.repositories.CategoryRepository;
-import com.springframework.projectshoptoy.repositories.OrderDetailRepository;
-import com.springframework.projectshoptoy.repositories.OrderRepository;
-import com.springframework.projectshoptoy.repositories.ProductRepository;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,84 +20,86 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-@RequiredArgsConstructor
 @Slf4j
 @Service
 public class CategoryServiceImpl implements  CategoryService{
-    private final CategoryRepository categoryRepository;
-    private final ProductRepository productRepository;
-    private final OrderRepository orderRepository;
-    private final OrderDetailRepository orderDetailRepository;
+	@Autowired
+	private MyEntityManager myEntityManager;
 
-    @Override
-    public Set<Category> getListCategory() {
-        log.debug("get list category");
-        Set<Category> categorySet=new HashSet<>();
-        categoryRepository.findAll().iterator().forEachRemaining(categorySet::add);
-        return categorySet;
-    }
+	public CategoryServiceImpl() {
+		myEntityManager=new MyEntityManager();
+	}
 
-    @Override
-    public boolean deleteCategory(String id) {
-    	Category cateogryFind=categoryRepository.findById(id)
-    			.orElseThrow(()->new NotFoundException("category not found id "+id));
-    	productRepository.listAllProductByIdCategory(id).forEach(product->{
-    		Optional<Product> productFind=productRepository.findById(product.getProductID());
-    		if(productFind.isPresent()==true) {
-    			List<String> listIDOrder=new ArrayList<String>();
-    	    	orderDetailRepository.listAllOrderDetailsByProductId(productFind.get().getProductID()).forEach(orderDetails->{
-    	    		if(listIDOrder.contains(orderDetails.getOrder().getOrderID())==false) {
-    	    			listIDOrder.add(orderDetails.getOrder().getOrderID());
-    	    		}
-    	    		orderDetailRepository.delete(orderDetails);
-    	    	});
-    	    	listIDOrder.forEach(idOrder->{
-    	    		Optional<Order> order=orderRepository.findById(idOrder);
-    	    		if(order.isPresent()==true) {
-    	    			int totalOrder=orderDetailRepository.listAllOrderDetailsByIdOrder(order.get().getOrderID())
-    	    			.size();
-    	    			if(totalOrder<=0) {
-    	    				orderRepository.delete(order.get());
-    	    			}
-    	    		}
-    	    	});
-    	    	productRepository.delete(product);
-    		}
-    	});
-    	categoryRepository.delete(cateogryFind);
-        return true;
-    }
+	@Override
+	public Set<Category> getListCategory() {
+		log.debug("get list categorys");
+		Set<Category> categorySet=new HashSet<>();
+		myEntityManager.getAllData(new Category()).forEach(categorySet::add);;
+		return categorySet;
+	}
 
-    @Override
-    public Category findCategoryByID(String id) {
-        return categoryRepository.findById(id).orElseThrow(()->new NotFoundException("can find id "+id));
-    }
+	@Override
+	public boolean deleteCategory(String id) {
+		if(id==null) {
+			throw new NotFoundException("Id category can't be null");
+		}
+		Category category=findCategoryByID(id);
+		List<Product> listProduct=myEntityManager.query("db.products.find({'categoryID':'"+id+"'})",new Product());
+		listProduct.forEach(t->{
+			
+			Set<Order> orderSet=new HashSet<>();
+			myEntityManager.getAllData(new Order()).forEach(orderSet::add);
+			orderSet.forEach(order->{
+				for(int i=0;i<order.getOrderDetails().size();i++) {
+					if(order.getOrderDetails().get(i).getProduct().getProductID().equals(t.getProductID())) {
+						order.getOrderDetails().remove(order.getOrderDetails().get(i));
+					}
+				}
+				if(order.getOrderDetails().size()<=0) {
+					myEntityManager.deleteT(order, order.getOrderID());
+				}else {
+					myEntityManager.updateT(order,order.getOrderID());
+				}
+			});
+			myEntityManager.deleteT(t, t.getProductID());
+		});
+		return myEntityManager.deleteT(category,category.getCategoryID());
+	}
 
-    @Override
-    public Category createNewCategory(Category category) {
-        if(category.getCategoryID()!=null){
-            Optional<Category> category1=categoryRepository.findById(category.getCategoryID());
-            if(category1.isPresent()==true){
-                log.error("conflix id");
-                throw new ConflixIdException("conflix id "+category1.get().getCategoryID());
-            }
-        }
-        category.setCategoryID("CT"+ObjectId.get().toString());
-        return  categoryRepository.save(category);
-    }
+	@Override
+	public Category findCategoryByID(String id) {
+		return (Category) myEntityManager.findById(new Category(), id).orElseThrow(()->new NotFoundException("can find id category"+id));
+	}
 
-    @Override
-    public Category updateCategory(String id, Category category) {
-        Category categoryFind=categoryRepository.findById(id).orElseThrow(()->new NotFoundException("Not found id "+id));
-        if(category.getCategoryName()!=null){
-            categoryFind.setCategoryName(category.getCategoryName());
-        }
-        if(category.getDescription()!=null){
-            categoryFind.setDescription(category.getDescription());
-        }
-        if(category.getPicture()!=null){
-            categoryFind.setPicture(category.getPicture());
-        }
-        return categoryRepository.save(categoryFind);
-    }
+	@Override
+	public Category createNewCategory(Category category) {
+		if(category.getCategoryID()!=null) {
+			if(myEntityManager.findById(new Category(),category.getCategoryID()).isPresent()) {
+				throw new ConflixIdException("category id had exists");
+			}
+		}
+		category.setCategoryID("CT"+ObjectId.get().toString());
+		boolean result=myEntityManager.addT(category,category.getCategoryID());
+		if(result==false) {
+			return null;
+		};
+		return category;
+	}
+
+	@Override
+	public Category updateCategory(String id, Category category) {
+		Category categoryFind=findCategoryByID(id);//categoryRepository.findById(id).orElseThrow(()->new NotFoundException("Not found id "+id));
+		if(category.getCategoryName()!=null){
+			categoryFind.setCategoryName(category.getCategoryName());
+		}
+		if(category.getDescription()!=null){
+			categoryFind.setDescription(category.getDescription());
+		}
+		if(category.getPicture()!=null){
+			categoryFind.setPicture(category.getPicture());
+		}
+		return myEntityManager.updateT(categoryFind, categoryFind.getCategoryID()).get();
+	}
+
+
 }

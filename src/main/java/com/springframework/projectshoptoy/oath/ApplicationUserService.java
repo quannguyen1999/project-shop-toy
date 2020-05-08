@@ -2,24 +2,22 @@ package com.springframework.projectshoptoy.oath;
 
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties.Admin;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.springframework.projectshoptoy.dao.MyEntityManager;
 import com.springframework.projectshoptoy.domain.Account;
-import com.springframework.projectshoptoy.exception.NotFoundException;
-import com.springframework.projectshoptoy.repositories.AccountRepository;
 
-import lombok.RequiredArgsConstructor;
 import static com.springframework.projectshoptoy.security.ApplicaitonUserRole.*;
 //kiểm tra username và password sẽ xảy ra ở đây
-@RequiredArgsConstructor
 @Service
 public class ApplicationUserService implements UserDetailsService{
-	private final AccountRepository accountRepository;
+	@Autowired
+	private MyEntityManager myEntityManager;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -28,13 +26,13 @@ public class ApplicationUserService implements UserDetailsService{
 		if(username==null) {
 			throw new UsernameNotFoundException("Username can not null");
 		}
-		Optional<Account> account=accountRepository.findById(username);
-		if(account.isPresent()==false) {
+		Account account=(Account) myEntityManager.findById(new Account(), username).get();
+		if(account==null) {
 			throw new UsernameNotFoundException("Username is not exists");
 		}
-		if(account.get().isAccType()==true) {
+		if(account.isAccType()==true) {
 			applicationUser=new ApplicationUser(username,
-					account.get().getPassword(),
+					account.getPassword(),
 					ADMIN.getGrantedAuthorities(),
 					true, 
 					true, 
@@ -42,7 +40,7 @@ public class ApplicationUserService implements UserDetailsService{
 					true);
 		}else {
 			applicationUser=new ApplicationUser(username,
-					account.get().getPassword(),
+					account.getPassword(),
 					EMP.getGrantedAuthorities(),
 					true, 
 					true, 

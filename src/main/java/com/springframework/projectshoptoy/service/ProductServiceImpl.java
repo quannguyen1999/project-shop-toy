@@ -1,21 +1,19 @@
 package com.springframework.projectshoptoy.service;
 
+import com.springframework.projectshoptoy.dao.MyEntityManager;
 import com.springframework.projectshoptoy.domain.Category;
+import com.springframework.projectshoptoy.domain.Customer;
 import com.springframework.projectshoptoy.domain.Order;
 import com.springframework.projectshoptoy.domain.OrderDetails;
 import com.springframework.projectshoptoy.domain.Product;
 import com.springframework.projectshoptoy.domain.Supplier;
 import com.springframework.projectshoptoy.exception.ConflixIdException;
 import com.springframework.projectshoptoy.exception.NotFoundException;
-import com.springframework.projectshoptoy.repositories.CategoryRepository;
-import com.springframework.projectshoptoy.repositories.OrderDetailRepository;
-import com.springframework.projectshoptoy.repositories.OrderRepository;
-import com.springframework.projectshoptoy.repositories.ProductRepository;
-import com.springframework.projectshoptoy.repositories.SupplierRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,91 +22,83 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-@RequiredArgsConstructor
 @Slf4j
 @Service
 public class ProductServiceImpl implements ProductService {
-	private final ProductRepository productRepository;
-	private final CategoryRepository categoryRepository;
-	private final SupplierRepository supplierRepository;
-	private final OrderDetailRepository orderDetailRepository;
-	private final OrderRepository orderRepository;
+	@Autowired
+	private MyEntityManager myEntityManager;
+	
+	public ProductServiceImpl() {
+		myEntityManager=new MyEntityManager();
+	}
 
 	@Override
 	public Set<Product> getListProduct() {
-		log.debug("get list product");
+		log.debug("get list Product");
 		Set<Product> productSet=new HashSet<>();
-		productRepository.findAll().iterator().forEachRemaining(productSet::add);
+		myEntityManager.getAllData(new Product()).forEach(productSet::add);;
 		return productSet;
 	}
 
 	@Override
 	public boolean deleteProduct(String idProduct) {
-		Product product=productRepository.findById(idProduct)
-				.orElseThrow(()->new NotFoundException("product not found id "+idProduct));
-		//list danh sách by productID
-		orderDetailRepository.listAllOrderDetailsByProductId(idProduct)
-		//get danh sách	orderDetails
-		.stream()
-		//xóa order Details trước và trả về kiểu String:orderDetailsID
-		.map(orderDetails->{
-			orderDetailRepository.delete(orderDetails);
-			return orderDetails.getOrder().getOrderID();
-		})
-		//id nào trùng thỉ bỏ bớt ra 1 cái
-		.distinct()
-		//list ra những OrderDetails ra
-		.forEach(orderID->{
-			System.out.println(orderID);
-			//tìm Order
-			Optional<Order> order=orderRepository.findById(orderID);
-			//Nếu Order có
-			if(order.isPresent()==true) {
-				//tính tổng kích cỡ order
-				int totalOrder=orderDetailRepository
-						.listAllOrderDetailsByIdOrder(order.get().getOrderID())
-						.size();
-				System.out.println(totalOrder);
-				//nếu order dưới <=0 thì xóa,(vì không còn order nào)
-				if(totalOrder<=0) {
-					orderRepository.delete(order.get());
+		if(idProduct==null) {
+			throw new NotFoundException("idProduct can't be null");
+		}
+		Product product=findProductByID(idProduct);
+		Set<Order> orderSet=new HashSet<>();
+		
+		myEntityManager.getAllData(new Order()).forEach(orderSet::add);
+		orderSet.forEach(order->{
+			for(int i=0;i<order.getOrderDetails().size();i++) {
+				if(order.getOrderDetails().get(i).getProduct().getProductID().equals(idProduct)) {
+					order.getOrderDetails().remove(order.getOrderDetails().get(i));
 				}
 			}
+			if(order.getOrderDetails().size()<=0) {
+				myEntityManager.deleteT(order, order.getOrderID());
+			}else {
+				myEntityManager.updateT(order,order.getOrderID());
+			}
 		});
-		productRepository.delete(product);
-		return true;
+		return myEntityManager.deleteT(product, idProduct);
 	}
 
 	@Override
 	public Product findProductByID(String id) {
-		return productRepository.findById(id).orElseThrow(()->new NotFoundException("can find id "+id));
+		return (Product) myEntityManager.findById(new Product(), id).orElseThrow(()->new NotFoundException("can find id Product"+id));
 	}
 
 	@Override
 	public Product createNewProduct(Product product) {
 		if(product.getProductID()!=null){
-			Optional<Product> productFind=productRepository.findById(product.getProductID());
-			if(productFind!=null){
-				throw  new ConflixIdException("conflix id product id "+productFind.get().getProductID());
+			if(myEntityManager.findById(new Product(),product.getProductID()).isPresent()) {
+				throw new ConflixIdException("product id had exists");
 			}
 		}
 		if(product.getCategory()==null || product.getCategory().getCategoryID()==null){
 			throw  new NotFoundException("ID category can't be null");
 		}
-		Category category=categoryRepository.findById(product.getCategory().getCategoryID()).orElseThrow(()->new NotFoundException("Not found id category "+product.getCategory().getCategoryID()));
+		
+		Category category=(Category) myEntityManager.findById(new Category(), product.getCategory().getCategoryID()).orElseThrow(()->new NotFoundException("can find id category"+product.getCategory().getCategoryID()));
 		product.setCategory(category);
 		if(product.getSupplier()==null || product.getSupplier().getSupplierID()==null){
 			throw new NotFoundException("ID supplier can't be null");
 		}
-		Supplier supplier=supplierRepository.findById(product.getSupplier().getSupplierID()).orElseThrow(()->new NotFoundException("Not found id supplier "+product.getSupplier().getSupplierID()));
+		Supplier supplier=(Supplier) myEntityManager.findById(new Supplier(), product.getSupplier().getSupplierID())
+				.orElseThrow(()->new NotFoundException("can find id category"+product.getSupplier().getSupplierID()));
 		product.setSupplier(supplier);
 		product.setProductID("PT"+ObjectId.get().toString());
-		return productRepository.save(product);
+		boolean result=myEntityManager.addT(product,product.getProductID());
+		if(result==false) {
+			return null;
+		}
+		return product;
 	}
 
 	@Override
 	public Product updateProduct(String id, Product product) {
-		Product productFind=productRepository.findById(id).orElseThrow(()->new NotFoundException("Not found id "+id));
+		Product productFind=(Product) myEntityManager.findById(new Product(), product.getProductID()).orElseThrow(()->new NotFoundException("can find id Product"+product.getProductID()));
 		if(product.isDiscontinued()==true){
 			productFind.setDiscontinued(product.isDiscontinued());
 		}
@@ -124,6 +114,8 @@ public class ProductServiceImpl implements ProductService {
 		if(product.getUnitPrice()!=productFind.getUnitPrice()){
 			productFind.setUnitPrice(product.getUnitPrice());
 		}
-		return productRepository.save(productFind);
+		return myEntityManager.updateT(productFind, productFind.getProductID()).get();
 	}
+
+	
 }

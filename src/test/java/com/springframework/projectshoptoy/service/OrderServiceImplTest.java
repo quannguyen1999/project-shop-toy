@@ -14,26 +14,18 @@ import org.mockito.MockitoAnnotations;
 
 import com.springframework.projectshoptoy.domain.Order;
 import com.springframework.projectshoptoy.domain.OrderDetails;
-import com.springframework.projectshoptoy.repositories.CustomerRepository;
-import com.springframework.projectshoptoy.repositories.OrderDetailRepository;
-import com.springframework.projectshoptoy.repositories.OrderRepository;
-import com.springframework.projectshoptoy.repositories.ProductRepository;
-
 public class OrderServiceImplTest {
-	OrderServiceImpl orderServiceImpl;
-	@Mock
-	private  OrderRepository orderRepository;
-	@Mock
-	private  OrderDetailRepository orderDetailRepository;
-	@Mock
-	private  CustomerRepository customerRepository;
-	@Mock
-	private  ProductRepository productRepository;
+//	OrderServiceImpl orderServiceImpl;
+//	@Mock
+//	private  OrderRepository orderRepository;
+//	@Mock
+//	private  CustomerRepository customerRepository;
+//	@Mock
+//	private  ProductRepository productRepository;
 
 	@BeforeEach
 	void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
-		orderServiceImpl=new OrderServiceImpl(orderRepository,orderDetailRepository,customerRepository,productRepository);
 	}
 
 	@AfterEach

@@ -20,13 +20,11 @@ public interface OrderService {
     boolean deleteOrder(String idOrder);
 
     //xóa orderDetails
-    boolean deleteOrderDetails(String orderID,String idOrderDetails);
+    boolean deleteOrderDetails(String orderID,String idProduct);
 
     //tìm kiếm Order bằng id
     Order findOrderById(String id);
 
-    //tìm kiếm OrderDetails bằng id
-    OrderDetails findOrderDetailById(String orderID,String idOrderDetails);
 
     //tạo Order
     Order createNewOrder(Order order);
@@ -38,5 +36,5 @@ public interface OrderService {
     Order updateOrder(String id, Order order);
 
     //cập nhập orderDetail
-    OrderDetails updateOrderDetails(String id,String orderDetailID,OrderDetails orderDetails);
+    OrderDetails updateOrderDetails(String id,OrderDetails orderDetails);
 }

@@ -18,10 +18,10 @@ public interface CustomerService {
     Customer createNewCustomer(String userName,Customer customer);
 
     //cập nhập khách hàng
-    Customer updateCustomer(String id,Customer customer);
+    Customer updateCustomer(String username,Customer customer);
 
     //tìm customer bằng userName
-    Customer findCustomerByUserName(String userName) throws  Exception;
+    Customer findCustomerByUserName(String userName);
 
 
 }
