@@ -12,6 +12,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.springframework.projectshoptoy.controller.CategoryController;
+import com.springframework.projectshoptoy.controller.ProductController;
+import com.springframework.projectshoptoy.controller.SupplierController;
 import com.springframework.projectshoptoy.jwt.JwtConfig;
 import com.springframework.projectshoptoy.jwt.JwtTokenverifier;
 import com.springframework.projectshoptoy.jwt.JwtUsernameAndPasswordAuthenticationFilter;
@@ -51,6 +54,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter{
 			//nơi để xác minh token
 			.addFilterAfter(new JwtTokenverifier(secretKey,jwtConfig),JwtUsernameAndPasswordAuthenticationFilter.class)
 			.authorizeRequests() 
+			.antMatchers(CategoryController.BASE_URL+"/**").permitAll()
+			.antMatchers(SupplierController.BASE_URL+"/**").permitAll()
+			.antMatchers(ProductController.BASE_URL+"/**").permitAll()
 			.antMatchers(AUTH_WHITELIST).permitAll() // cho phép truy cập
 			.antMatchers("/api/**").hasAnyRole(ADMIN.name(),EMP.name())
 			.anyRequest()	//còn lại bấy cứ request nào
