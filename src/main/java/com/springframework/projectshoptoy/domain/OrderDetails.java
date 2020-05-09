@@ -29,7 +29,7 @@ public class OrderDetails implements Serializable{
 
     private int totalAmount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne//(fetch = FetchType.LAZY)
     @JoinColumn(name = "productID")
     private Product product;
 }

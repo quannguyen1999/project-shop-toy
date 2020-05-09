@@ -1,5 +1,6 @@
 package com.springframework.projectshoptoy.service;
 
+import com.springframework.projectshoptoy.commandObject.OrderCommand;
 import com.springframework.projectshoptoy.dao.MyEntityManager;
 import com.springframework.projectshoptoy.domain.Customer;
 import com.springframework.projectshoptoy.domain.Order;
@@ -7,6 +8,8 @@ import com.springframework.projectshoptoy.domain.OrderDetails;
 import com.springframework.projectshoptoy.domain.Product;
 import com.springframework.projectshoptoy.exception.ConflixIdException;
 import com.springframework.projectshoptoy.exception.NotFoundException;
+import com.springframework.projectshoptoy.mapper.OrderMapper;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
@@ -23,12 +26,17 @@ import javax.persistence.EntityTransaction;
 public class OrderServiceImpl implements OrderService{
 	@Autowired
 	private MyEntityManager myEntityManager;
+	
+	@Autowired
+	private OrderMapper orderMapper;
 
 	@Override
-	public Set<Order> getListOrder() {
+	public Set<OrderCommand> getListOrder() {
 		log.debug("get list orders");
-		Set<Order> orderSet=new HashSet<>();
-		myEntityManager.getAllData(new Order()).forEach(orderSet::add);;
+		Set<OrderCommand> orderSet=new HashSet<>();
+		myEntityManager.getAllData(new Order()).forEach(t->{
+			orderSet.add(orderMapper.orderToOrderCommand(t));
+		});
 		return orderSet;
 	}
 
@@ -221,11 +229,15 @@ public class OrderServiceImpl implements OrderService{
 	}
 
 	@Override
-	public Set<Order> getListOrderByCustomerID(String id) {
-		List<Order> listOrder= myEntityManager.query("db.orders.find({'customerID':'"+id+"'})",new Order());
-		if(listOrder.size()<=0) {
+	public Set<OrderCommand> getListOrderByCustomerID(String id) {
+		List<Order> listOrderFind= myEntityManager.query("db.orders.find({'customerID':'"+id+"'})",new Order());
+		if(listOrderFind.size()<=0) {
 			throw new NotFoundException("customer don't have any order");
 		}
-		return (Set<Order>) listOrder;
+		Set<OrderCommand> listOrder=new HashSet<OrderCommand>();
+		listOrderFind.forEach(t->{
+			listOrder.add(orderMapper.orderToOrderCommand(t));
+		});
+		return listOrder;
 	}
 }

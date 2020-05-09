@@ -1,5 +1,6 @@
 package com.springframework.projectshoptoy.service;
 
+import com.springframework.projectshoptoy.commandObject.OrderCommand;
 import com.springframework.projectshoptoy.domain.Account;
 import com.springframework.projectshoptoy.domain.Order;
 import com.springframework.projectshoptoy.domain.OrderDetails;
@@ -8,10 +9,10 @@ import java.util.Set;
 
 public interface OrderService {
     //lấy danh sách Order
-    Set<Order> getListOrder();
+    Set<OrderCommand> getListOrder();
     
     //lấy danh sách order by customer id
-    Set<Order> getListOrderByCustomerID(String id);
+    Set<OrderCommand> getListOrderByCustomerID(String id);
 
     //lấy danh sách orderDetails
     Set<OrderDetails> getListOrderDetails(String orderID);
@@ -24,7 +25,6 @@ public interface OrderService {
 
     //tìm kiếm Order bằng id
     Order findOrderById(String id);
-
 
     //tạo Order
     Order createNewOrder(Order order);

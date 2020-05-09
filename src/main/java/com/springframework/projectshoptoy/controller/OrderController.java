@@ -1,5 +1,6 @@
 package com.springframework.projectshoptoy.controller;
 
+import com.springframework.projectshoptoy.commandObject.OrderCommand;
 import com.springframework.projectshoptoy.domain.ErrorException;
 import com.springframework.projectshoptoy.domain.Order;
 import com.springframework.projectshoptoy.domain.OrderDetails;
@@ -32,7 +33,7 @@ public class OrderController {
     @ApiOperation(value = "lấy danh sách Order")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Set<Order> orders(){
+    public Set<OrderCommand> orders(){
         return orderService.getListOrder();
     }
 
@@ -72,7 +73,7 @@ public class OrderController {
     @ApiOperation(value = "tìm kiếm danh sách order của khách hàng ")
     @GetMapping("/customer/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Set<Order> getListOrderByCustomerID(@PathVariable String id){
+    public Set<OrderCommand> getListOrderByCustomerID(@PathVariable String id){
     	return orderService.getListOrderByCustomerID(id);
     }
 

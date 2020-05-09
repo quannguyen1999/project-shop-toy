@@ -47,7 +47,7 @@ public class Order {
     @Future(message = "shippedDate can not past day")
     private LocalDate shippedDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customerID")
     private Customer customer;
     
