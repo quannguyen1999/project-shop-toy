@@ -50,8 +50,8 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     }
 
     private void loadCategory() {
-		Account account=new Account("admin", "Khanhhoa123#",true );
-		Customer customer=new Customer("33/16 duong huynh van", "ho chi minh", "ngeuyan@gmail.com", "quan", "nguyen");
+		Account account=new Account("admin", "Khanhhoa123#","quangnuyen@gmail.com",true );
+		Customer customer=new Customer("33/16 duong huynh van", "ho chi minh", "quan", "nguyen");
 		Category category=new Category("caasdasd", "fuck fuck", "picture.jpg");
 		Supplier supplier=new Supplier("0708821227", "abc abc", "33/16 asdasd");
 		Product product=new Product(true, "fuck fuyck", "kim quyen", 50, 50, category, supplier);

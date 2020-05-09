@@ -99,9 +99,9 @@ public class CustomerServiceImpl implements  CustomerService{
 		if(customer.getCity()!=null){
 			customer1.setCity(customer.getCity());
 		}
-		if(customer.getEmail()!=null){
-			customer1.setEmail(customer.getEmail());
-		}
+//		if(customer.getEmail()!=null){
+//			customer1.setEmail(customer.getEmail());
+//		}
 		if(customer.getFirstName()!=null){
 			customer1.setFirstName(customer.getFirstName());
 		}
