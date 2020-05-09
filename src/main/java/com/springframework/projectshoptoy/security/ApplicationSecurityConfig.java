@@ -3,6 +3,7 @@ package com.springframework.projectshoptoy.security;
 import org.springframework.context.annotation.Bean;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -12,7 +13,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.springframework.projectshoptoy.controller.AccountController;
 import com.springframework.projectshoptoy.controller.CategoryController;
+import com.springframework.projectshoptoy.controller.CustomerController;
 import com.springframework.projectshoptoy.controller.ProductController;
 import com.springframework.projectshoptoy.controller.SupplierController;
 import com.springframework.projectshoptoy.jwt.JwtConfig;
@@ -57,6 +60,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter{
 			.antMatchers(CategoryController.BASE_URL+"/**").permitAll()
 			.antMatchers(SupplierController.BASE_URL+"/**").permitAll()
 			.antMatchers(ProductController.BASE_URL+"/**").permitAll()
+			.antMatchers(HttpMethod.POST,AccountController.BASE_URL).permitAll()
 			.antMatchers(AUTH_WHITELIST).permitAll() // cho phép truy cập
 			.antMatchers("/api/**").hasAnyRole(ADMIN.name(),EMP.name())
 			.anyRequest()	//còn lại bấy cứ request nào

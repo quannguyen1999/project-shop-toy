@@ -3,6 +3,7 @@ package com.springframework.projectshoptoy.controller;
 import com.springframework.projectshoptoy.domain.Account;
 import com.springframework.projectshoptoy.domain.Customer;
 import com.springframework.projectshoptoy.domain.ErrorException;
+import com.springframework.projectshoptoy.domain.Product;
 import com.springframework.projectshoptoy.service.AccountService;
 import com.springframework.projectshoptoy.service.CustomerService;
 
@@ -14,7 +15,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+
+import java.util.List;
 import java.util.Set;
 @Api(description = "khách hàng")
 @Slf4j
@@ -25,6 +30,14 @@ public class CustomerController {
     public final static String BASE_URL="/api/customers";
     private final CustomerService customerService;
 
+    
+//    @GetMapping("/addCard")
+//    @ResponseStatus(HttpStatus.OK)
+//    public List<Product> listProduct(HttpServletRequest request){
+//    	HttpSession session=request.getSession();
+//    	session 
+//    }
+    
     //lấy danh sách custmers
     @ApiOperation(value = "lấy danh sách custmers")
     @GetMapping
