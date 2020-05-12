@@ -10,19 +10,19 @@ import javax.persistence.Persistence;
 import org.springframework.stereotype.Component;
 @Component
 public class MyEntityManager {
-	private static MyEntityManager instance=null;
-
 	private EntityManager em;
 
 	public MyEntityManager() {
 		this.em =Persistence.createEntityManagerFactory("project-shop-toy").createEntityManager();
 	}
-
-	public synchronized static MyEntityManager getInstance() {
-		if(instance==null) {
-			instance=new MyEntityManager();
-		}
-		return instance;
+	
+	//tối ưu singleton và thread perfomanrce thấp không còn
+	private static class SingletonHelper{
+		private static MyEntityManager instance=new MyEntityManager();
+	}
+	
+	public static MyEntityManager getInstance() {
+		return SingletonHelper.instance;
 	}
 
 	public EntityManager getEm() {
