@@ -1,4 +1,4 @@
-package com.springframework.projectshoptoy.oath;
+package com.springframework.projectshoptoy.security.oath;
 
 import java.util.Optional;
 
@@ -9,8 +9,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.springframework.projectshoptoy.api.domain.Account;
 import com.springframework.projectshoptoy.dao.MyEntityManager;
-import com.springframework.projectshoptoy.domain.Account;
 
 import static com.springframework.projectshoptoy.security.ApplicaitonUserRole.*;
 //kiểm tra username và password sẽ xảy ra ở đây

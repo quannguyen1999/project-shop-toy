@@ -1,4 +1,4 @@
-package com.springframework.projectshoptoy.oath;
+package com.springframework.projectshoptoy.security.oath;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
