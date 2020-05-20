@@ -4,11 +4,11 @@
 http://localhost:8080/swagger-ui.html
 
 //init
-//mở loadCategory chạy 1 lần và đóng comment lại để tránh lỗi
+mở loadCategory chạy 1 lần và đóng comment lại để tránh lỗi
 
 //account mặc định
-//username:admin
-//password:Khanhhoa123#
+username:admin
+password:Khanhhoa123#
 
 //mongodb
-//tên db:db
+tên db:db
