@@ -1,7 +1,8 @@
 package com.springframework.projectshoptoy.controller;
 
-import com.springframework.projectshoptoy.domain.Category;
-import com.springframework.projectshoptoy.domain.ErrorException;
+import com.springframework.projectshoptoy.api.commandObject.CategoryCommand;
+import com.springframework.projectshoptoy.api.domain.Category;
+import com.springframework.projectshoptoy.api.domain.ErrorException;
 import com.springframework.projectshoptoy.service.CategoryService;
 
 import io.swagger.annotations.Api;
@@ -27,7 +28,7 @@ public class CategoryController {
     @ApiOperation(value = "lấy danh sách mặt hàng")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Set<Category> categories(){
+    public Set<CategoryCommand> categories(){
         return categoryService.getListCategory();
     }
 
@@ -35,7 +36,7 @@ public class CategoryController {
     @ApiOperation(value = "thêm mới mặt hàng")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Category createNewCategory(@Valid @RequestBody Category category){
+    public CategoryCommand createNewCategory(@Valid @RequestBody Category category){
         return categoryService.createNewCategory(category);
     }
 
@@ -43,7 +44,7 @@ public class CategoryController {
     @ApiOperation(value = "tìm kiếm category bằng id")
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Category findCategoryByID(@PathVariable String id){
+    public CategoryCommand findCategoryByID(@PathVariable String id){
         return categoryService.findCategoryByID(id);
     }
 
@@ -63,7 +64,7 @@ public class CategoryController {
     @ApiOperation(value = "cập nhập category")
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Category updateCategory(@PathVariable String id,@RequestBody Category category){
+    public CategoryCommand updateCategory(@PathVariable String id,@RequestBody Category category){
         return categoryService.updateCategory(id,category);
     }
 

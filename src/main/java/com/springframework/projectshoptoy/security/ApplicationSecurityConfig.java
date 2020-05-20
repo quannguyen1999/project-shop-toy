@@ -18,10 +18,10 @@ import com.springframework.projectshoptoy.controller.CategoryController;
 import com.springframework.projectshoptoy.controller.CustomerController;
 import com.springframework.projectshoptoy.controller.ProductController;
 import com.springframework.projectshoptoy.controller.SupplierController;
-import com.springframework.projectshoptoy.jwt.JwtConfig;
-import com.springframework.projectshoptoy.jwt.JwtTokenverifier;
-import com.springframework.projectshoptoy.jwt.JwtUsernameAndPasswordAuthenticationFilter;
-import com.springframework.projectshoptoy.oath.ApplicationUserService;
+import com.springframework.projectshoptoy.security.jwt.JwtConfig;
+import com.springframework.projectshoptoy.security.jwt.JwtTokenverifier;
+import com.springframework.projectshoptoy.security.jwt.JwtUsernameAndPasswordAuthenticationFilter;
+import com.springframework.projectshoptoy.security.oath.ApplicationUserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -60,6 +60,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter{
 			.antMatchers(CategoryController.BASE_URL+"/**").permitAll()
 			.antMatchers(SupplierController.BASE_URL+"/**").permitAll()
 			.antMatchers(ProductController.BASE_URL+"/**").permitAll()
+			.antMatchers(CustomerController.BASE_URL+"/**").permitAll()
 			.antMatchers(HttpMethod.POST,AccountController.BASE_URL).permitAll()
 			.antMatchers(AUTH_WHITELIST).permitAll() // cho phép truy cập
 			.antMatchers("/api/**").hasAnyRole(ADMIN.name(),EMP.name())

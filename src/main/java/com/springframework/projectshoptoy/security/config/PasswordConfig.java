@@ -1,4 +1,4 @@
-package com.springframework.projectshoptoy.config;
+package com.springframework.projectshoptoy.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

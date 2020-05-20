@@ -1,9 +1,9 @@
 package com.springframework.projectshoptoy.service;
 
-import com.springframework.projectshoptoy.commandObject.OrderCommand;
-import com.springframework.projectshoptoy.domain.Account;
-import com.springframework.projectshoptoy.domain.Order;
-import com.springframework.projectshoptoy.domain.OrderDetails;
+import com.springframework.projectshoptoy.api.commandObject.OrderCommand;
+import com.springframework.projectshoptoy.api.domain.Account;
+import com.springframework.projectshoptoy.api.domain.Order;
+import com.springframework.projectshoptoy.api.domain.OrderDetails;
 
 import java.util.Set;
 
@@ -24,16 +24,16 @@ public interface OrderService {
     boolean deleteOrderDetails(String orderID,String idProduct);
 
     //tìm kiếm Order bằng id
-    Order findOrderById(String id);
+    OrderCommand findOrderById(String id);
 
     //tạo Order
-    Order createNewOrder(Order order);
+    OrderCommand createNewOrder(Order order);
 
     //tạo order detail
     OrderDetails createNewOrderDetail(String orderID,OrderDetails orderDetails);
 
     //cập nhập Order
-    Order updateOrder(String id, Order order);
+    OrderCommand updateOrder(String id, Order order);
 
     //cập nhập orderDetail
     OrderDetails updateOrderDetails(String id,OrderDetails orderDetails);

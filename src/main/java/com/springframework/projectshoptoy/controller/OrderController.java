@@ -1,10 +1,10 @@
 package com.springframework.projectshoptoy.controller;
 
-import com.springframework.projectshoptoy.commandObject.OrderCommand;
-import com.springframework.projectshoptoy.domain.ErrorException;
-import com.springframework.projectshoptoy.domain.Order;
-import com.springframework.projectshoptoy.domain.OrderDetails;
-import com.springframework.projectshoptoy.domain.Supplier;
+import com.springframework.projectshoptoy.api.commandObject.OrderCommand;
+import com.springframework.projectshoptoy.api.domain.ErrorException;
+import com.springframework.projectshoptoy.api.domain.Order;
+import com.springframework.projectshoptoy.api.domain.OrderDetails;
+import com.springframework.projectshoptoy.api.domain.Supplier;
 import com.springframework.projectshoptoy.service.OrderService;
 import com.springframework.projectshoptoy.service.SupplierService;
 
@@ -49,7 +49,7 @@ public class OrderController {
     @ApiOperation(value = "thêm mới Order")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Order createNewOrder(@Valid @RequestBody Order order){
+    public OrderCommand createNewOrder(@Valid @RequestBody Order order){
         return orderService.createNewOrder(order);
     }
 
@@ -65,7 +65,7 @@ public class OrderController {
     @ApiOperation(value = "tìm kiếm order bằng id")
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Order findOrderByID(@PathVariable String id){
+    public OrderCommand findOrderByID(@PathVariable String id){
         return orderService.findOrderById(id);
     }
     
@@ -113,7 +113,7 @@ public class OrderController {
     @ApiOperation(value = "cập nhập Order")
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Order updateOrder(@PathVariable String id,@RequestBody Order order){
+    public OrderCommand updateOrder(@PathVariable String id,@RequestBody Order order){
         return orderService.updateOrder(id,order);
     }
 

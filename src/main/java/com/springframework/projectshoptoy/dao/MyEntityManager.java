@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
+import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
 @Component
 public class MyEntityManager {
@@ -63,6 +64,7 @@ public class MyEntityManager {
 				tr.begin();
 				updateO=em.merge(t);
 				tr.commit();
+				em.clear();
 		} catch (Exception e) {
 			tr.rollback();
 		}
@@ -97,6 +99,7 @@ public class MyEntityManager {
 	private <T> boolean functionT(T t,int type) {
 		boolean result=false;
 		EntityTransaction tr=em.getTransaction();
+		
 		try {
 			tr.begin();
 			if(type==1) {
@@ -111,7 +114,9 @@ public class MyEntityManager {
 			}
 			tr.commit();
 			result=true;
+			em.clear();
 		} catch (Exception e) {
+			e.printStackTrace();
 			tr.rollback();
 		}
 		return result;

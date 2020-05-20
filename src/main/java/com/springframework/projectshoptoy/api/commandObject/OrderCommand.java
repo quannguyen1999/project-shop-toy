@@ -1,4 +1,4 @@
-package com.springframework.projectshoptoy.commandObject;
+package com.springframework.projectshoptoy.api.commandObject;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.springframework.projectshoptoy.domain.OrderDetails;
+import com.springframework.projectshoptoy.api.domain.OrderDetails;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +20,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class OrderCommand {
+	private String orderId;
+	
     private LocalDate orderDate;
 
     @NotEmpty(message = "shipCity can't null")
@@ -34,5 +36,7 @@ public class OrderCommand {
     private LocalDate shippedDate;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    private List<OrderDetails> orderDetails;
+    private List<OrderDetailsCommand> orderDetails;
+    
+    private String customerID;
 }

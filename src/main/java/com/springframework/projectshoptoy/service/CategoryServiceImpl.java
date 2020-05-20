@@ -1,11 +1,13 @@
 package com.springframework.projectshoptoy.service;
 
+import com.springframework.projectshoptoy.api.commandObject.CategoryCommand;
+import com.springframework.projectshoptoy.api.domain.Account;
+import com.springframework.projectshoptoy.api.domain.Category;
+import com.springframework.projectshoptoy.api.domain.Customer;
+import com.springframework.projectshoptoy.api.domain.Order;
+import com.springframework.projectshoptoy.api.domain.Product;
+import com.springframework.projectshoptoy.api.mapper.CategoryMapper;
 import com.springframework.projectshoptoy.dao.MyEntityManager;
-import com.springframework.projectshoptoy.domain.Account;
-import com.springframework.projectshoptoy.domain.Category;
-import com.springframework.projectshoptoy.domain.Customer;
-import com.springframework.projectshoptoy.domain.Order;
-import com.springframework.projectshoptoy.domain.Product;
 import com.springframework.projectshoptoy.exception.ConflixIdException;
 import com.springframework.projectshoptoy.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -25,17 +27,22 @@ import java.util.Set;
 public class CategoryServiceImpl implements  CategoryService{
 	@Autowired
 	private MyEntityManager myEntityManager;
+	
+	@Autowired
+	private CategoryMapper categoryMapper;
 
 	public CategoryServiceImpl() {
 		myEntityManager=new MyEntityManager();
 	}
 
 	@Override
-	public Set<Category> getListCategory() {
+	public Set<CategoryCommand> getListCategory() {
 		log.debug("get list categorys");
-		Set<Category> categorySet=new HashSet<>();
-		myEntityManager.getAllData(new Category()).forEach(categorySet::add);;
-		return categorySet;
+		Set<CategoryCommand> categoryCommandSet=new HashSet<>();
+		myEntityManager.getAllData(new Category()).forEach(t->{
+			categoryCommandSet.add(categoryMapper.categoryToCategoyCommand(t));
+		});;
+		return categoryCommandSet;
 	}
 
 	@Override
@@ -43,7 +50,7 @@ public class CategoryServiceImpl implements  CategoryService{
 		if(id==null) {
 			throw new NotFoundException("Id category can't be null");
 		}
-		Category category=findCategoryByID(id);
+		Category category=categoryMapper.categoryCommandToCategory(findCategoryByID(id));
 		List<Product> listProduct=myEntityManager.query("db.products.find({'categoryID':'"+id+"'})",new Product());
 		listProduct.forEach(t->{
 			
@@ -67,12 +74,12 @@ public class CategoryServiceImpl implements  CategoryService{
 	}
 
 	@Override
-	public Category findCategoryByID(String id) {
-		return (Category) myEntityManager.findById(new Category(), id).orElseThrow(()->new NotFoundException("can find id category"+id));
+	public CategoryCommand findCategoryByID(String id) {
+		return categoryMapper.categoryToCategoyCommand((Category) myEntityManager.findById(new Category(), id).orElseThrow(()->new NotFoundException("can find id category"+id)));
 	}
 
 	@Override
-	public Category createNewCategory(Category category) {
+	public CategoryCommand createNewCategory(Category category) {
 		if(category.getCategoryID()!=null) {
 			if(myEntityManager.findById(new Category(),category.getCategoryID()).isPresent()) {
 				throw new ConflixIdException("category id had exists");
@@ -83,12 +90,13 @@ public class CategoryServiceImpl implements  CategoryService{
 		if(result==false) {
 			return null;
 		};
-		return category;
+		
+		return categoryMapper.categoryToCategoyCommand(category);
 	}
 
 	@Override
-	public Category updateCategory(String id, Category category) {
-		Category categoryFind=findCategoryByID(id);//categoryRepository.findById(id).orElseThrow(()->new NotFoundException("Not found id "+id));
+	public CategoryCommand updateCategory(String id, Category category) {
+		Category categoryFind=categoryMapper.categoryCommandToCategory(findCategoryByID(id));//categoryRepository.findById(id).orElseThrow(()->new NotFoundException("Not found id "+id));
 		if(category.getCategoryName()!=null){
 			categoryFind.setCategoryName(category.getCategoryName());
 		}
@@ -98,7 +106,7 @@ public class CategoryServiceImpl implements  CategoryService{
 		if(category.getPicture()!=null){
 			categoryFind.setPicture(category.getPicture());
 		}
-		return myEntityManager.updateT(categoryFind, categoryFind.getCategoryID()).get();
+		return categoryMapper.categoryToCategoyCommand(myEntityManager.updateT(categoryFind, categoryFind.getCategoryID()).get());
 	}
 
 

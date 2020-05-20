@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import com.springframework.projectshoptoy.api.domain.Account;
+import com.springframework.projectshoptoy.api.domain.Category;
+import com.springframework.projectshoptoy.api.domain.Customer;
+import com.springframework.projectshoptoy.api.domain.Order;
+import com.springframework.projectshoptoy.api.domain.OrderDetails;
+import com.springframework.projectshoptoy.api.domain.Product;
+import com.springframework.projectshoptoy.api.domain.Supplier;
 import com.springframework.projectshoptoy.dao.MyEntityManager;
-import com.springframework.projectshoptoy.domain.Account;
-import com.springframework.projectshoptoy.domain.Category;
-import com.springframework.projectshoptoy.domain.Customer;
-import com.springframework.projectshoptoy.domain.Order;
-import com.springframework.projectshoptoy.domain.OrderDetails;
-import com.springframework.projectshoptoy.domain.Product;
-import com.springframework.projectshoptoy.domain.Supplier;
 import com.springframework.projectshoptoy.exception.ConflixIdException;
 import com.springframework.projectshoptoy.exception.NotFoundException;
 import com.springframework.projectshoptoy.service.AccountService;
@@ -33,6 +33,10 @@ import com.springframework.projectshoptoy.service.SupplierServiceImpl;
 
 public class TestConsole {
 	public static void main(String[] args) {
+		CustomerServiceImpl customerServiceImpl=new CustomerServiceImpl();
+		customerServiceImpl.getCustomers().forEach(t->{
+			System.out.println(t.getAddress());
+		});
 //		MyEntityManager myEntityManager=new MyEntityManager();
 //						init();
 //		//		MyEntityManager myEntityManager=new MyEntityManager();

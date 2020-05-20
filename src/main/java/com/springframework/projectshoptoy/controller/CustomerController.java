@@ -1,9 +1,10 @@
 package com.springframework.projectshoptoy.controller;
 
-import com.springframework.projectshoptoy.domain.Account;
-import com.springframework.projectshoptoy.domain.Customer;
-import com.springframework.projectshoptoy.domain.ErrorException;
-import com.springframework.projectshoptoy.domain.Product;
+import com.springframework.projectshoptoy.api.commandObject.CustomerCommand;
+import com.springframework.projectshoptoy.api.domain.Account;
+import com.springframework.projectshoptoy.api.domain.Customer;
+import com.springframework.projectshoptoy.api.domain.ErrorException;
+import com.springframework.projectshoptoy.api.domain.Product;
 import com.springframework.projectshoptoy.service.AccountService;
 import com.springframework.projectshoptoy.service.CustomerService;
 
@@ -30,19 +31,11 @@ public class CustomerController {
     public final static String BASE_URL="/api/customers";
     private final CustomerService customerService;
 
-    
-//    @GetMapping("/addCard")
-//    @ResponseStatus(HttpStatus.OK)
-//    public List<Product> listProduct(HttpServletRequest request){
-//    	HttpSession session=request.getSession();
-//    	session 
-//    }
-    
     //lấy danh sách custmers
     @ApiOperation(value = "lấy danh sách custmers")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Set<Customer> getListCustomers(){
+    public Set<CustomerCommand> getListCustomers(){
         return customerService.getCustomers();
     }
 
@@ -50,7 +43,7 @@ public class CustomerController {
     @ApiOperation(value = "tìm khách hàng bằng id")
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Customer findAccountById( @PathVariable String id){
+    public CustomerCommand findAccountById( @PathVariable String id){
         return customerService.findCustomerById(id);
     }
 
@@ -58,7 +51,7 @@ public class CustomerController {
     @ApiOperation(value = "thêm mới customer")
     @PostMapping("/{userName}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Customer createNewCustomer(@PathVariable String userName,@Valid @RequestBody Customer customer){
+    public CustomerCommand createNewCustomer(@PathVariable String userName,@Valid @RequestBody Customer customer){
         return customerService.createNewCustomer(userName,customer);
     }
 
@@ -66,7 +59,7 @@ public class CustomerController {
     @ApiOperation(value = "cập nhập khách hàng")
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Customer updateAccount(@PathVariable String id,@RequestBody Customer customer){
+    public CustomerCommand updateAccount(@PathVariable String id,@RequestBody Customer customer){
         return customerService.updateCustomer(id,customer);
     }
 
@@ -85,7 +78,7 @@ public class CustomerController {
     //tìm kiếm customer bằng userName
     @ApiOperation(value = "tìm kiếm customer bằng userName")
     @GetMapping("/userName/{id}")
-    public ResponseEntity<Customer> findCustomerByUserName(@PathVariable String id) throws Exception {
-        return new ResponseEntity<Customer>(customerService.findCustomerByUserName(id),HttpStatus.OK);
+    public ResponseEntity<CustomerCommand> findCustomerByUserName(@PathVariable String id) throws Exception {
+        return new ResponseEntity<CustomerCommand>(customerService.findCustomerByUserName(id),HttpStatus.OK);
     }
 }

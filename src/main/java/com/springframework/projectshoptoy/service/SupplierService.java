@@ -1,24 +1,25 @@
 package com.springframework.projectshoptoy.service;
 
-import com.springframework.projectshoptoy.domain.Account;
-import com.springframework.projectshoptoy.domain.Supplier;
-
 import java.util.Set;
+
+import com.springframework.projectshoptoy.api.commandObject.SupplierCommand;
+import com.springframework.projectshoptoy.api.domain.Account;
+import com.springframework.projectshoptoy.api.domain.Supplier;
 
 public interface SupplierService {
     //lấy danh sách Supplier
-    Set<Supplier> getListSupplier();
+    Set<SupplierCommand> getListSupplier();
 
     //xóa Supplier
     boolean deleteSupplier(String idSupplier);
 
     //tìm kiếm Supplier bằng userName
-    Supplier findSupplierById(String Id);
+    SupplierCommand findSupplierById(String Id);
 
     //tạo Supplier
-    Supplier createNewSupplier(Supplier supplier);
+    SupplierCommand createNewSupplier(Supplier supplier);
 
     //cập nhập Supplier
-    Supplier updateSupplier(String id, Supplier supplier);
+    SupplierCommand updateSupplier(String id, Supplier supplier);
 
 }

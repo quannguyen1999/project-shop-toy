@@ -1,23 +1,24 @@
 package com.springframework.projectshoptoy.service;
 
-import com.springframework.projectshoptoy.domain.Account;
-import com.springframework.projectshoptoy.domain.Category;
-
 import java.util.Set;
+
+import com.springframework.projectshoptoy.api.commandObject.CategoryCommand;
+import com.springframework.projectshoptoy.api.domain.Account;
+import com.springframework.projectshoptoy.api.domain.Category;
 
 public interface CategoryService {
     //lấy danh sách account
-    Set<Category> getListCategory();
+    Set<CategoryCommand> getListCategory();
 
     //xóa account
     boolean deleteCategory(String id);
 
     //tìm kiếm category bằng id
-    Category findCategoryByID(String id);
+    CategoryCommand findCategoryByID(String id);
 
     //tạo category
-    Category createNewCategory(Category category);
+    CategoryCommand createNewCategory(Category category);
 
     //cập nhập category
-    Category updateCategory(String id, Category category);
+    CategoryCommand updateCategory(String id, Category category);
 }

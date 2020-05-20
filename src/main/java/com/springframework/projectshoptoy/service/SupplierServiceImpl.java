@@ -1,9 +1,11 @@
 package com.springframework.projectshoptoy.service;
 
+import com.springframework.projectshoptoy.api.commandObject.SupplierCommand;
+import com.springframework.projectshoptoy.api.domain.Order;
+import com.springframework.projectshoptoy.api.domain.Product;
+import com.springframework.projectshoptoy.api.domain.Supplier;
+import com.springframework.projectshoptoy.api.mapper.SupplierMapper;
 import com.springframework.projectshoptoy.dao.MyEntityManager;
-import com.springframework.projectshoptoy.domain.Supplier;
-import com.springframework.projectshoptoy.domain.Order;
-import com.springframework.projectshoptoy.domain.Product;
 import com.springframework.projectshoptoy.exception.ConflixIdException;
 import com.springframework.projectshoptoy.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -20,15 +22,22 @@ public class SupplierServiceImpl implements   SupplierService{
 	@Autowired
 	private MyEntityManager myEntityManager;
 	
+	@Autowired
+	private SupplierMapper supplierMapper;
+	
 	public SupplierServiceImpl() {
 		myEntityManager=new MyEntityManager();
 	}
 
     @Override
-    public Set<Supplier> getListSupplier() {
+    public Set<SupplierCommand> getListSupplier() {
         log.debug("get list Supplier");
-		Set<Supplier> supplierSet=new HashSet<>();
-		myEntityManager.getAllData(new Supplier()).forEach(supplierSet::add);
+		Set<SupplierCommand> supplierSet=new HashSet<>();
+		System.out.println(supplierSet.size());
+		myEntityManager.getAllData(new Supplier()).forEach(t->{
+			System.out.println(t.getProducts().size());
+			supplierSet.add(supplierMapper.supplierToSupplierCommand(t));
+		});
         return supplierSet;
     }
 
@@ -37,7 +46,7 @@ public class SupplierServiceImpl implements   SupplierService{
     	if(idSupplier==null) {
 			throw new NotFoundException("Id Supplier can't be null");
 		}
-		Supplier Supplier=findSupplierById(idSupplier);
+		Supplier Supplier=supplierMapper.supplierCommandToSupplier(findSupplierById(idSupplier));
 		List<Product> listProduct=myEntityManager.query("db.products.find({'supplierID':'"+idSupplier+"'})",new Product());
 		listProduct.forEach(t->{
 			Set<Order> orderSet=new HashSet<>();
@@ -60,12 +69,12 @@ public class SupplierServiceImpl implements   SupplierService{
     }
 
     @Override
-    public Supplier findSupplierById(String Id) {
-        return (Supplier) myEntityManager.findById(new Supplier(), Id).orElseThrow(()->new NotFoundException("can find id Supplier"+Id));
+    public SupplierCommand findSupplierById(String Id) {
+        return supplierMapper.supplierToSupplierCommand((Supplier) myEntityManager.findById(new Supplier(), Id).orElseThrow(()->new NotFoundException("can find id Supplier"+Id)));
     }
 
     @Override
-    public Supplier createNewSupplier(Supplier supplier) {
+    public SupplierCommand createNewSupplier(Supplier supplier) {
         if(supplier.getSupplierID()!=null){
         	if(myEntityManager.findById(new Supplier(),supplier.getSupplierID()).isPresent()) {
 				throw new ConflixIdException("supplier id had exists");
@@ -76,12 +85,12 @@ public class SupplierServiceImpl implements   SupplierService{
 		if(result==false) {
 			return null;
 		}
-		return supplier;
+		return	supplierMapper.supplierToSupplierCommand(supplier);
     }
 
     @Override
-    public Supplier updateSupplier(String id, Supplier supplier) {
-        Supplier supplierFind=findSupplierById(id);
+    public SupplierCommand updateSupplier(String id, Supplier supplier) {
+        Supplier supplierFind=supplierMapper.supplierCommandToSupplier(findSupplierById(id));
         if(supplierFind==null) {
         	throw new NotFoundException("Not found that id supplier");
         }
@@ -94,7 +103,7 @@ public class SupplierServiceImpl implements   SupplierService{
         if(supplier.getPhone()!=null){
             supplierFind.setPhone(supplier.getPhone());
         }
-        return myEntityManager.updateT(supplierFind, supplierFind.getSupplierID()).get();
+        return supplierMapper.supplierToSupplierCommand(myEntityManager.updateT(supplierFind, supplierFind.getSupplierID()).get());
     }
 
 	

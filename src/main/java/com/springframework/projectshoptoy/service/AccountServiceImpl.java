@@ -1,9 +1,9 @@
 package com.springframework.projectshoptoy.service;
 
+import com.springframework.projectshoptoy.api.domain.Account;
+import com.springframework.projectshoptoy.api.domain.Customer;
+import com.springframework.projectshoptoy.api.domain.Order;
 import com.springframework.projectshoptoy.dao.MyEntityManager;
-import com.springframework.projectshoptoy.domain.Account;
-import com.springframework.projectshoptoy.domain.Customer;
-import com.springframework.projectshoptoy.domain.Order;
 import com.springframework.projectshoptoy.exception.ConflixIdException;
 import com.springframework.projectshoptoy.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +37,8 @@ public class AccountServiceImpl implements  AccountService{
 	public Set<Account> getListAccount() {
 		log.debug("get list accounts");
 		Set<Account> accountSet=new HashSet<>();
-		myEntityManager.getAllData(new Account()).forEach(accountSet::add);;
+		myEntityManager.getAllData(new Account()).forEach(accountSet::add);
+		
 		return accountSet;
 	}
 

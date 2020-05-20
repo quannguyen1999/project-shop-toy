@@ -1,7 +1,7 @@
 package com.springframework.projectshoptoy.controller;
 
-import com.springframework.projectshoptoy.domain.Account;
-import com.springframework.projectshoptoy.domain.Customer;
+import com.springframework.projectshoptoy.api.domain.Account;
+import com.springframework.projectshoptoy.api.domain.Customer;
 import com.springframework.projectshoptoy.service.AccountService;
 import com.springframework.projectshoptoy.service.CustomerService;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,12 +50,11 @@ public class CustomerControllerTest {
 //        customer.setAccount(account);
         customer.setAddress("33/16");
         customer.setCity("usa");
-        customer.setEmail("employee@gmail.com");
         customer.setFirstName("kim");
         customer.setLastName("quyen");
 
         customers.add(customer);
-        when(customerService.getCustomers()).thenReturn(customers);
+//        when(customerService.getCustomers()).thenReturn(customers);
 
         mockMvc.perform(get(CustomerController.BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON))

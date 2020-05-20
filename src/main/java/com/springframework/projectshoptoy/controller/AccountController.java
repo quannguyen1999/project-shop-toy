@@ -1,8 +1,8 @@
 package com.springframework.projectshoptoy.controller;
 
-import com.springframework.projectshoptoy.domain.Account;
-import com.springframework.projectshoptoy.domain.Customer;
-import com.springframework.projectshoptoy.domain.ErrorException;
+import com.springframework.projectshoptoy.api.domain.Account;
+import com.springframework.projectshoptoy.api.domain.Customer;
+import com.springframework.projectshoptoy.api.domain.ErrorException;
 import com.springframework.projectshoptoy.exception.ConflixIdException;
 import com.springframework.projectshoptoy.service.AccountService;
 import com.springframework.projectshoptoy.service.CustomerService;

@@ -1,6 +1,6 @@
 package com.springframework.projectshoptoy.service;
 
-import com.springframework.projectshoptoy.domain.Account;
+import com.springframework.projectshoptoy.api.domain.Account;
 import com.springframework.projectshoptoy.exception.ConflixIdException;
 
 import java.util.Set;

@@ -2,13 +2,13 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 	<persistence-unit name="project-shop-toy">
 		<provider>org.hibernate.ogm.jpa.HibernateOgmPersistence</provider>
-		<class>com.springframework.projectshoptoy.domain.Account</class>
-		<class>com.springframework.projectshoptoy.domain.Category</class>
-		<class>com.springframework.projectshoptoy.domain.Customer</class>
-		<class>com.springframework.projectshoptoy.domain.Supplier</class>
-		<class>com.springframework.projectshoptoy.domain.Product</class>
-		<class>com.springframework.projectshoptoy.domain.Order</class>
-		<class>com.springframework.projectshoptoy.domain.OrderDetails</class>
+		<class>com.springframework.projectshoptoy.api.domain.Account</class>
+		<class>com.springframework.projectshoptoy.api.domain.Category</class>
+		<class>com.springframework.projectshoptoy.api.domain.Customer</class>
+		<class>com.springframework.projectshoptoy.api.domain.Supplier</class>
+		<class>com.springframework.projectshoptoy.api.domain.Product</class>
+		<class>com.springframework.projectshoptoy.api.domain.Order</class>
+		<class>com.springframework.projectshoptoy.api.domain.OrderDetails</class>
 		<properties>
 			<property name="hibernate.ogm.datastore.provider"
 				value="org.hibernate.ogm.datastore.mongodb.impl.MongoDBDatastoreProvider" />

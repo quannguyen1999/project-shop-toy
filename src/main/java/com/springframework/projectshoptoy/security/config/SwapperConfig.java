@@ -1,9 +1,12 @@
-package com.springframework.projectshoptoy.config;
+package com.springframework.projectshoptoy.security.config;
 
 import java.util.ArrayList;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import com.google.common.base.Predicates;
+
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -20,7 +23,8 @@ public class SwapperConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.any())
+                //xóa errorController default in swagger ui
+                .paths(Predicates.not(PathSelectors.regex("/error.*")))
                 .build()
                 .pathMapping("/")
                 .apiInfo(metaData());

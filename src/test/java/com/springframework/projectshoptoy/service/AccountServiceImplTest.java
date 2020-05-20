@@ -1,10 +1,11 @@
 package com.springframework.projectshoptoy.service;
 
-import com.springframework.projectshoptoy.domain.Account;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import com.springframework.projectshoptoy.api.domain.Account;
 
 import java.util.HashSet;
 import java.util.Set;

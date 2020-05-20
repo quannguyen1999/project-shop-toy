@@ -1,4 +1,4 @@
-package com.springframework.projectshoptoy.jwt;
+package com.springframework.projectshoptoy.security.jwt;
 
 import java.io.IOException;
 import java.util.List;

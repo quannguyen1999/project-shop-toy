@@ -1,6 +1,6 @@
 package com.springframework.projectshoptoy.controller;
 
-import com.springframework.projectshoptoy.domain.ErrorException;
+import com.springframework.projectshoptoy.api.domain.ErrorException;
 import com.springframework.projectshoptoy.exception.ConflixIdException;
 import com.springframework.projectshoptoy.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;

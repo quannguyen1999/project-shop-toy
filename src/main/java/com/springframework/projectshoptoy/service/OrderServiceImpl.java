@@ -1,14 +1,14 @@
 package com.springframework.projectshoptoy.service;
 
-import com.springframework.projectshoptoy.commandObject.OrderCommand;
+import com.springframework.projectshoptoy.api.commandObject.OrderCommand;
+import com.springframework.projectshoptoy.api.domain.Customer;
+import com.springframework.projectshoptoy.api.domain.Order;
+import com.springframework.projectshoptoy.api.domain.OrderDetails;
+import com.springframework.projectshoptoy.api.domain.Product;
+import com.springframework.projectshoptoy.api.mapper.OrderMapper;
 import com.springframework.projectshoptoy.dao.MyEntityManager;
-import com.springframework.projectshoptoy.domain.Customer;
-import com.springframework.projectshoptoy.domain.Order;
-import com.springframework.projectshoptoy.domain.OrderDetails;
-import com.springframework.projectshoptoy.domain.Product;
 import com.springframework.projectshoptoy.exception.ConflixIdException;
 import com.springframework.projectshoptoy.exception.NotFoundException;
-import com.springframework.projectshoptoy.mapper.OrderMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -57,7 +57,7 @@ public class OrderServiceImpl implements OrderService{
 		if(idOrder==null){
 			throw  new NotFoundException("id order can't be null");
 		}
-		Order order=findOrderById(idOrder);
+		Order order=orderMapper.orderCommandToOrder(findOrderById(idOrder));
 		if(order==null) {
 			throw new NotFoundException("Not found that order id");
 		}
@@ -69,7 +69,7 @@ public class OrderServiceImpl implements OrderService{
 		if(orderID==null){
 			throw  new NotFoundException("id order can't be null");
 		}
-		Order order=findOrderById(orderID);
+		Order order=orderMapper.orderCommandToOrder(findOrderById(orderID));
 		if(idProduct==null) {
 			throw  new NotFoundException("idProduct can't be null");
 		}
@@ -78,7 +78,7 @@ public class OrderServiceImpl implements OrderService{
 				order.getOrderDetails().remove(order.getOrderDetails().get(i));
 			}
 		}
-		Order orderUpdate=updateOrder(orderID, order);
+		Order orderUpdate=orderMapper.orderCommandToOrder(updateOrder(orderID, order));
 		if(orderUpdate.getOrderDetails().size()<=0) {
 			deleteOrder(orderUpdate.getOrderID());
 		}
@@ -86,12 +86,12 @@ public class OrderServiceImpl implements OrderService{
 	}
 
 	@Override
-	public Order findOrderById(String id) {
-		return (Order) myEntityManager.findById(new Order(), id).orElseThrow(()->new NotFoundException("can find id Order"+id));
+	public OrderCommand findOrderById(String id) {
+		return orderMapper.orderToOrderCommand((Order) myEntityManager.findById(new Order(), id).orElseThrow(()->new NotFoundException("can find id Order"+id)));
 	}
 
 	@Override
-	public Order createNewOrder(Order order) {
+	public OrderCommand createNewOrder(Order order) {
 		Customer customer=null;
 		if(order.getCustomer()!=null){
 			customer=(Customer) myEntityManager.findById(new Customer(), order.getCustomer().getCustomerID()).orElseThrow(()->new NotFoundException("can find id customer"+order.getCustomer().getCustomerID()));
@@ -137,12 +137,12 @@ public class OrderServiceImpl implements OrderService{
 		if(result==false) {
 			return null;
 		}
-		return  order;
+		return  orderMapper.orderToOrderCommand(order);
 	}
 
 	@Override
-	public Order updateOrder(String id, Order order) {
-		Order orderFind=findOrderById(id);
+	public OrderCommand updateOrder(String id, Order order) {
+		Order orderFind=orderMapper.orderCommandToOrder(findOrderById(id));
 		if(orderFind==null) {
 			throw new NotFoundException("Not found that orderID");
 		}
@@ -160,7 +160,7 @@ public class OrderServiceImpl implements OrderService{
 			orderFind.setShipRegion(order.getShipRegion());
 		}
 
-		return myEntityManager.updateT(orderFind, orderFind.getOrderID()).get();
+		return orderMapper.orderToOrderCommand(myEntityManager.updateT(orderFind, orderFind.getOrderID()).get());
 	}
 
 	@Override
@@ -185,7 +185,7 @@ public class OrderServiceImpl implements OrderService{
 		if(orderID==null){
 			throw  new NotFoundException("orderID can't be null");
 		}
-		Order order=findOrderById(orderID);
+		Order order=orderMapper.orderCommandToOrder(findOrderById(orderID));
 		if(order==null) {
 			throw new NotFoundException("Not found order id "+orderID);
 		}

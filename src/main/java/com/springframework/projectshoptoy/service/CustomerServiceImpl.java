@@ -1,9 +1,11 @@
 package com.springframework.projectshoptoy.service;
 
+import com.springframework.projectshoptoy.api.commandObject.CustomerCommand;
+import com.springframework.projectshoptoy.api.domain.Account;
+import com.springframework.projectshoptoy.api.domain.Customer;
+import com.springframework.projectshoptoy.api.domain.Order;
+import com.springframework.projectshoptoy.api.mapper.CustomerMapper;
 import com.springframework.projectshoptoy.dao.MyEntityManager;
-import com.springframework.projectshoptoy.domain.Account;
-import com.springframework.projectshoptoy.domain.Customer;
-import com.springframework.projectshoptoy.domain.Order;
 import com.springframework.projectshoptoy.exception.ConflixIdException;
 import com.springframework.projectshoptoy.exception.NotFoundException;
 
@@ -27,14 +29,21 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class CustomerServiceImpl implements  CustomerService{
+	
+	@Autowired
+	private CustomerMapper customerMapper;
+	
 	@Autowired
 	private MyEntityManager myEntityManager;
 
 	@Override
-	public Set<Customer> getCustomers() {
+	public Set<CustomerCommand> getCustomers() {
 		log.debug("get list accounts");
-		Set<Customer> customerSet=new HashSet<>();
-		myEntityManager.getAllData(new Customer()).forEach(customerSet::add);;
+		Set<CustomerCommand> customerSet=new HashSet<>();
+		myEntityManager.getAllData(new Customer()).forEach(t->{
+			System.out.println(t.getAddress());
+			customerSet.add(customerMapper.customerToCustomerCommand(t));
+		});
 		return customerSet;
 	}
 
@@ -43,26 +52,26 @@ public class CustomerServiceImpl implements  CustomerService{
 		if(id==null){
 			throw new NotFoundException("id can't be null");
 		}
-		Customer customr=findCustomerById(id);
+		Customer customr=customerMapper.customerCommandToCustomer(findCustomerById(id));
 		return myEntityManager.deleteT(customr, customr.getCustomerID());
 	}
 
 	@Override
-	public Customer findCustomerByUserName(String userName){
+	public CustomerCommand findCustomerByUserName(String userName){
 		List<Customer> listCustomer= myEntityManager.query("db.customers.find({'username':'"+userName+"'})",new Customer());
 		if(listCustomer.size()<=0) {
 			throw new NotFoundException("not found customer by username "+userName);
 		}
-		return (Customer)listCustomer.get(0);
+		return customerMapper.customerToCustomerCommand(listCustomer.get(0));
 	}
 
 	@Override
-	public Customer findCustomerById(String id) {
-		return (Customer) myEntityManager.findById(new Customer(), id).orElseThrow(()->new NotFoundException("can find id customer"+id));
+	public CustomerCommand findCustomerById(String id) {
+		return customerMapper.customerToCustomerCommand((Customer) myEntityManager.findById(new Customer(), id).orElseThrow(()->new NotFoundException("can find id customer"+id)));
 	}
 
 	@Override
-	public Customer createNewCustomer(String userName,Customer customer) {
+	public CustomerCommand createNewCustomer(String userName,Customer customer) {
 		if(customer.getCustomerID()!=null) {
 			if(myEntityManager.findById(new Customer(),customer.getCustomerID()).isPresent()) {
 				throw new ConflixIdException("customer id had exists");
@@ -84,12 +93,12 @@ public class CustomerServiceImpl implements  CustomerService{
 		if(result==false) {
 			return null;
 		}
-		return customer;
+		return customerMapper.customerToCustomerCommand(customer);
 	}
 
 	@Override
-	public Customer updateCustomer(String username, Customer customer) {
-		Customer customer1=findCustomerByUserName(username);
+	public CustomerCommand updateCustomer(String username, Customer customer) {
+		Customer customer1=customerMapper.customerCommandToCustomer(findCustomerByUserName(username));
 		if(customer1==null) {
 			throw new NotFoundException("Not found that username");
 		}
@@ -108,7 +117,7 @@ public class CustomerServiceImpl implements  CustomerService{
 		if(customer.getLastName()!=null){
 			customer1.setLastName(customer.getLastName());
 		}
-		return myEntityManager.updateT(customer1, customer1.getCustomerID()).get();
+		return customerMapper.customerToCustomerCommand(myEntityManager.updateT(customer1, customer1.getCustomerID()).get());
 	}
 
 

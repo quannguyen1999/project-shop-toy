@@ -1,4 +1,4 @@
-package com.springframework.projectshoptoy.jwt;
+package com.springframework.projectshoptoy.security.jwt;
 public class UserNameAndPasswordAuthenticationRequest {
 	private String username;
 	private String password;

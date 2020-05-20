@@ -11,8 +11,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import com.springframework.projectshoptoy.domain.Order;
-import com.springframework.projectshoptoy.domain.OrderDetails;
+
+import com.springframework.projectshoptoy.api.domain.Order;
+import com.springframework.projectshoptoy.api.domain.OrderDetails;
 public class OrderServiceImplTest {
 //	OrderServiceImpl orderServiceImpl;
 //	@Mock

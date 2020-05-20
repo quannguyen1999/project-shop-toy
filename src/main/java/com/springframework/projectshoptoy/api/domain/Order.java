@@ -1,4 +1,4 @@
-package com.springframework.projectshoptoy.domain;
+package com.springframework.projectshoptoy.api.domain;
 
 import lombok.Data;
 import lombok.Getter;

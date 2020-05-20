@@ -1,12 +1,15 @@
-package com.springframework.projectshoptoy.domain;
+package com.springframework.projectshoptoy.api.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -28,6 +31,10 @@ public class Category {
 
     @NotEmpty(message = "picture not valid")
     private String picture;
+    
+    //orpahnRemoval đảm bảo toàn vẹn dữ liệu khi product đã xóa ,thì category cũng phải cập nhập lại
+    @OneToMany(mappedBy = "categoryID",fetch = FetchType.LAZY,orphanRemoval = true)
+    private List<Product> products;
 
 	public Category(@NotEmpty(message = "categoryName not valid") String categoryName,
 			@NotEmpty(message = "description not valid") String description,

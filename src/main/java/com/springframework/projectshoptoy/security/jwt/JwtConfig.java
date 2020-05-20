@@ -1,4 +1,4 @@
-package com.springframework.projectshoptoy.jwt;
+package com.springframework.projectshoptoy.security.jwt;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;

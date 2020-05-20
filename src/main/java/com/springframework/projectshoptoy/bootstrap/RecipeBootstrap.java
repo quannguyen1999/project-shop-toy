@@ -1,7 +1,7 @@
 package com.springframework.projectshoptoy.bootstrap;
 
+import com.springframework.projectshoptoy.api.domain.*;
 import com.springframework.projectshoptoy.dao.MyEntityManager;
-import com.springframework.projectshoptoy.domain.*;
 import com.springframework.projectshoptoy.service.AccountService;
 import com.springframework.projectshoptoy.service.AccountServiceImpl;
 import com.springframework.projectshoptoy.service.CategoryService;

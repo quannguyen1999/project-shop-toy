@@ -1,8 +1,9 @@
 package com.springframework.projectshoptoy.controller;
 
-import com.springframework.projectshoptoy.domain.Category;
-import com.springframework.projectshoptoy.domain.ErrorException;
-import com.springframework.projectshoptoy.domain.Supplier;
+import com.springframework.projectshoptoy.api.commandObject.SupplierCommand;
+import com.springframework.projectshoptoy.api.domain.Category;
+import com.springframework.projectshoptoy.api.domain.ErrorException;
+import com.springframework.projectshoptoy.api.domain.Supplier;
 import com.springframework.projectshoptoy.service.CategoryService;
 import com.springframework.projectshoptoy.service.SupplierService;
 
@@ -29,7 +30,7 @@ public class SupplierController {
     @ApiOperation(value = "lấy danh sách Supplier")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Set<Supplier> suppliers(){
+    public Set<SupplierCommand> suppliers(){
         return supplierService.getListSupplier();
     }
 
@@ -37,7 +38,7 @@ public class SupplierController {
     @ApiOperation(value = "thêm mới Supplier")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Supplier createNewSupplier(@Valid @RequestBody Supplier supplier){
+    public SupplierCommand createNewSupplier(@Valid @RequestBody Supplier supplier){
         return supplierService.createNewSupplier(supplier);
     }
 
@@ -45,7 +46,7 @@ public class SupplierController {
     @ApiOperation(value = "tìm kiếm Supplier bằng id")
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Supplier findSupplierByID(@PathVariable String id){
+    public SupplierCommand findSupplierByID(@PathVariable String id){
         return supplierService.findSupplierById(id);
     }
 
@@ -65,7 +66,7 @@ public class SupplierController {
     @ApiOperation(value = "cập nhập Supplier")
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Supplier updateSupplier(@PathVariable String id,@RequestBody Supplier supplier){
+    public SupplierCommand updateSupplier(@PathVariable String id,@RequestBody Supplier supplier){
         return supplierService.updateSupplier(id,supplier);
     }
 
