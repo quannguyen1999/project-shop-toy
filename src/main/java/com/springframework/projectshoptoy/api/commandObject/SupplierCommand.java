@@ -1,19 +1,16 @@
 package com.springframework.projectshoptoy.api.commandObject;
 
 import java.util.List;
-
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.springframework.projectshoptoy.api.domain.Product;
-
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+//objetct command để tránh vòng lặp khi sử dụng bi-direction
+//@Data để khởi tạo getter,setter,constructor mặc định
+//@NoArgConstructor là khởi tạo consuctor không tham số
 @Data
 public class SupplierCommand {
+	//@ApiModelProperty để sắp xếp thứ tự property trong swagger-ui
 	@ApiModelProperty(position = 0)
     private String supplierID;
 
@@ -30,8 +27,6 @@ public class SupplierCommand {
     @NotEmpty
     private String address;
     
-    //hide property in swagger-ui
-//    @JsonIgnore
 	@ApiModelProperty(position = 4)
     private List<ProductCommand> productCommands;
 

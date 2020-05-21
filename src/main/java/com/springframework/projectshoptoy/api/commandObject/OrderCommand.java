@@ -2,20 +2,18 @@ package com.springframework.projectshoptoy.api.commandObject;
 
 import java.time.LocalDate;
 import java.util.List;
-
 import javax.persistence.ElementCollection;
 import javax.persistence.FetchType;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-
 import org.springframework.format.annotation.DateTimeFormat;
-
-import com.springframework.projectshoptoy.api.domain.OrderDetails;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+//objetct command để tránh vòng lặp khi sử dụng bi-direction
+//@Getter,@Setter để khởi tạo getter,setter mặc định
+//@NoArgsConstructor để khởi tạo constructor không tham số
 @NoArgsConstructor
 @Getter
 @Setter

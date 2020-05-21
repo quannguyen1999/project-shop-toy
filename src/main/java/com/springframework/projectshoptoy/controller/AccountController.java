@@ -23,7 +23,11 @@ import org.springframework.web.servlet.mvc.method.annotation.ServletResponseMeth
 import javax.validation.Valid;
 import java.util.Set;
 import java.util.stream.Collectors;
-
+//@Api:Mô tả api trong swagger-ui
+//@Slf4j để dùng logger.info,...
+//@RequiredArgsConstructor:để tạo constructor có tham số
+//@RequestMapping:tên trang để truy cập
+//@RestController :đăng ký Bean controler
 @Api(description = "tài khoản")
 @Slf4j
 @RequiredArgsConstructor
@@ -33,6 +37,9 @@ public class AccountController {
     public final static String BASE_URL="/api/accounts";
     private final AccountService accountService;
 
+    //@ApiOperaion:đổi tên trong swagger-ui
+    //@GetMapping:Type:Get
+    //@Responstatus trả về kiểu status
     //lấy danh sách account
     @ApiOperation(value = "lấy danh sách tài khoản")
     @GetMapping
@@ -41,6 +48,7 @@ public class AccountController {
         return accountService.getListAccount();
     }
 
+    //ResponseEntity để trả về kiểu Json
     //xóa account bằng id
     @ApiOperation(value = "xóa tài khoản bằng id")
     @DeleteMapping("/{id}")

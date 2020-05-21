@@ -4,7 +4,6 @@ import com.springframework.projectshoptoy.api.commandObject.CategoryCommand;
 import com.springframework.projectshoptoy.api.domain.Category;
 import com.springframework.projectshoptoy.api.domain.ErrorException;
 import com.springframework.projectshoptoy.service.CategoryService;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -12,9 +11,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.Set;
+//@Api:Mô tả api trong swagger-ui
+//@Slf4j để dùng logger.info,...
+//@RequiredArgsConstructor:để tạo constructor có tham số
+//@RequestMapping:tên trang để truy cập
+//@RestController :đăng ký Bean controler
 @Api(description = "mặt hàng")
 @Slf4j
 @RequiredArgsConstructor
@@ -24,6 +27,9 @@ public class CategoryController {
     public final static String  BASE_URL="/api/categories";
     private final CategoryService categoryService;
 
+    //@ApiOperaion:đổi tên trong swagger-ui
+    //@GetMapping:Type:Get
+    //@Responstatus trả về kiểu status
     //lấy danh sách category
     @ApiOperation(value = "lấy danh sách mặt hàng")
     @GetMapping

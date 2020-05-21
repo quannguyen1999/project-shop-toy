@@ -1,51 +1,39 @@
 package com.springframework.projectshoptoy.bootstrap;
 
 import com.springframework.projectshoptoy.api.domain.*;
-import com.springframework.projectshoptoy.dao.MyEntityManager;
 import com.springframework.projectshoptoy.service.AccountService;
-import com.springframework.projectshoptoy.service.AccountServiceImpl;
 import com.springframework.projectshoptoy.service.CategoryService;
-import com.springframework.projectshoptoy.service.CategoryServiceImpl;
 import com.springframework.projectshoptoy.service.CustomerService;
-import com.springframework.projectshoptoy.service.CustomerServiceImpl;
 import com.springframework.projectshoptoy.service.OrderService;
-import com.springframework.projectshoptoy.service.OrderServiceImpl;
 import com.springframework.projectshoptoy.service.ProductService;
-import com.springframework.projectshoptoy.service.ProductServiceImpl;
 import com.springframework.projectshoptoy.service.SupplierService;
-import com.springframework.projectshoptoy.service.SupplierServiceImpl;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.util.Arrays;
-
-@Slf4j
+//@Component là  bean,được tiêm vào spring container để khởi tạo
+//ApplicationListener chạy trước khi spring boot chạy
 @Component
 public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
+	//@Autowired Tìm kiếm bean service để tiêm vào
 	@Autowired
-	private SupplierService supplierService;//=new SupplierServiceImpl();
+	private SupplierService supplierService;
 	@Autowired
-	private ProductService productService;//=new ProductServiceImpl();
+	private ProductService productService;
 	@Autowired
-	private CategoryService categoryService;//=new CategoryServiceImpl();
+	private CategoryService categoryService;
 	@Autowired
-	private OrderService orderService;//=new OrderServiceImpl();
+	private OrderService orderService;
 	@Autowired
-	private CustomerService customerService;//=new CustomerServiceImpl();
+	private CustomerService customerService;
 	@Autowired
-	private AccountService accountService;//=new AccountServiceImpl();
+	private AccountService accountService;
 	
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+    	//load dữ liệu
 //        loadCategory();
     }
 

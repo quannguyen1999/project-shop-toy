@@ -2,14 +2,12 @@ package com.springframework.projectshoptoy.api.mapper;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.stereotype.Component;
-
 import com.springframework.projectshoptoy.api.commandObject.ProductCommand;
 import com.springframework.projectshoptoy.api.commandObject.SupplierCommand;
 import com.springframework.projectshoptoy.api.domain.Product;
 import com.springframework.projectshoptoy.api.domain.Supplier;
-
+//Chuyển các object thành object Command để đảm bảo dữ liệu không bị vòng lặp trong bi-direction
 @Component
 public class SupplierMapper {
 	public Supplier supplierCommandToSupplier(SupplierCommand supplierCommand) {

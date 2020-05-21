@@ -22,6 +22,7 @@
 	</properties>
 
 	<dependencies>
+		<!-- Ogm cho database mongodb -->
 		<!-- https://mvnrepository.com/artifact/org.hibernate.ogm/hibernate-ogm-core -->
 		<dependency>
 			<groupId>org.hibernate.ogm</groupId>
@@ -34,6 +35,7 @@
 			<artifactId>hibernate-ogm-mongodb</artifactId>
 			<version>5.4.1.Final</version>
 		</dependency>
+		
 		<!-- jwt token -->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
@@ -52,6 +54,7 @@
 			<version>0.11.1</version>
 			<scope>runtime</scope>
 		</dependency>
+		
 		<!-- spring security -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -62,6 +65,7 @@
 			<artifactId>guava</artifactId>
 			<version>28.1-jre</version>
 		</dependency>
+		
 		<!-- swagger:dùng để show api và document -->
 		<dependency>
 			<groupId>io.springfox</groupId>
@@ -73,12 +77,14 @@
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>${springfox-swagger.version}</version>
 		</dependency>
+		
 		<!-- dùng để convert project -->
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct-jdk8</artifactId>
 			<version>${org.mapstruct.version}</version>
 		</dependency>
+		
 		<!-- mongodb hibernate -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

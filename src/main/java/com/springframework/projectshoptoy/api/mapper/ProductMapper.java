@@ -1,12 +1,11 @@
 package com.springframework.projectshoptoy.api.mapper;
 
 import org.springframework.stereotype.Component;
-
 import com.springframework.projectshoptoy.api.commandObject.ProductCommand;
 import com.springframework.projectshoptoy.api.domain.Category;
 import com.springframework.projectshoptoy.api.domain.Product;
 import com.springframework.projectshoptoy.api.domain.Supplier;
-
+//Chuyển các object thành object Command để đảm bảo dữ liệu không bị vòng lặp trong bi-direction
 @Component
 public class ProductMapper {
 	public ProductCommand productToProductCommand(Product product) {

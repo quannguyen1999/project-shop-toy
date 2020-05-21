@@ -3,9 +3,8 @@ package com.springframework.projectshoptoy.service;
 import java.util.Set;
 
 import com.springframework.projectshoptoy.api.commandObject.SupplierCommand;
-import com.springframework.projectshoptoy.api.domain.Account;
 import com.springframework.projectshoptoy.api.domain.Supplier;
-
+//Đảm bảo tính trừu tượng,kế thừa,bao đóng,Hợp thành
 public interface SupplierService {
     //lấy danh sách Supplier
     Set<SupplierCommand> getListSupplier();

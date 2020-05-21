@@ -3,28 +3,19 @@ package com.springframework.projectshoptoy.service;
 import com.springframework.projectshoptoy.api.commandObject.CustomerCommand;
 import com.springframework.projectshoptoy.api.domain.Account;
 import com.springframework.projectshoptoy.api.domain.Customer;
-import com.springframework.projectshoptoy.api.domain.Order;
 import com.springframework.projectshoptoy.api.mapper.CustomerMapper;
 import com.springframework.projectshoptoy.dao.MyEntityManager;
 import com.springframework.projectshoptoy.exception.ConflixIdException;
 import com.springframework.projectshoptoy.exception.NotFoundException;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 @Service

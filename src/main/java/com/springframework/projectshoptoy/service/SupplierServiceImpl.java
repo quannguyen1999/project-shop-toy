@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
+//Đảm bảo tính trừu tượng,kế thừa,bao đóng,Hợp thành
 @Slf4j
 @Service
 public class SupplierServiceImpl implements   SupplierService{

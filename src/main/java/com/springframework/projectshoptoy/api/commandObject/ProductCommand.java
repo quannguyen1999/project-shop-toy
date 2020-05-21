@@ -1,18 +1,13 @@
 package com.springframework.projectshoptoy.api.commandObject;
 
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-
-import com.springframework.projectshoptoy.api.domain.Category;
-import com.springframework.projectshoptoy.api.domain.Supplier;
-
-import lombok.AllArgsConstructor;
 import lombok.Data;
+//objetct command để tránh vòng lặp khi sử dụng bi-direction
+//@Data để khởi tạo getter,setter,constructor mặc định
+//@NoArgConstructor là khởi tạo consuctor không tham số
 @Data
 public class ProductCommand {
 	@Id
@@ -37,5 +32,4 @@ public class ProductCommand {
     private String categoryID;
 
     private String  supplierID;
-
 }

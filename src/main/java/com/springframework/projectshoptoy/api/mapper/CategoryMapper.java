@@ -9,7 +9,7 @@ import com.springframework.projectshoptoy.api.commandObject.CategoryCommand;
 import com.springframework.projectshoptoy.api.commandObject.ProductCommand;
 import com.springframework.projectshoptoy.api.domain.Category;
 import com.springframework.projectshoptoy.api.domain.Product;
-
+//Chuyển các object thành object Command để đảm bảo dữ liệu không bị vòng lặp trong bi-direction
 @Component
 public class CategoryMapper {
 	public CategoryCommand categoryToCategoyCommand(Category category) {

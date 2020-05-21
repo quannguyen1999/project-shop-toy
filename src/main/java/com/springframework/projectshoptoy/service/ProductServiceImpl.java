@@ -2,28 +2,19 @@ package com.springframework.projectshoptoy.service;
 
 import com.springframework.projectshoptoy.api.commandObject.ProductCommand;
 import com.springframework.projectshoptoy.api.domain.Category;
-import com.springframework.projectshoptoy.api.domain.Customer;
 import com.springframework.projectshoptoy.api.domain.Order;
-import com.springframework.projectshoptoy.api.domain.OrderDetails;
 import com.springframework.projectshoptoy.api.domain.Product;
 import com.springframework.projectshoptoy.api.domain.Supplier;
 import com.springframework.projectshoptoy.api.mapper.ProductMapper;
 import com.springframework.projectshoptoy.dao.MyEntityManager;
 import com.springframework.projectshoptoy.exception.ConflixIdException;
 import com.springframework.projectshoptoy.exception.NotFoundException;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
-
 @Slf4j
 @Service
 public class ProductServiceImpl implements ProductService {

@@ -1,12 +1,10 @@
 package com.springframework.projectshoptoy.service;
 
 import com.springframework.projectshoptoy.api.commandObject.OrderCommand;
-import com.springframework.projectshoptoy.api.domain.Account;
 import com.springframework.projectshoptoy.api.domain.Order;
 import com.springframework.projectshoptoy.api.domain.OrderDetails;
-
 import java.util.Set;
-
+//Đảm bảo tính trừu tượng,kế thừa,bao đóng,Hợp thành
 public interface OrderService {
     //lấy danh sách Order
     Set<OrderCommand> getListOrder();

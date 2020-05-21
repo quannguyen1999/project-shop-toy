@@ -2,25 +2,18 @@ package com.springframework.projectshoptoy.api.commandObject;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.springframework.projectshoptoy.api.domain.Account;
-import com.springframework.projectshoptoy.api.domain.Order;
-
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+//objetct command để tránh vòng lặp khi sử dụng bi-direction
+//@Data để khởi tạo getter,setter,constructor mặc định 
+//@NoArgsConstructor để tạo constructor không tham số
 @NoArgsConstructor
 @Data
 public class CustomerCommand {
+	//@ApiModel property sắp xếp các thuộc tính 
 	@ApiModelProperty(position = 0)
 	private String customerID;
 
@@ -48,10 +41,6 @@ public class CustomerCommand {
 	@ApiModelProperty(position = 5)
 	private String userName;
 
-	//hide property in swagger-ui
-//	@JsonIgnore
 	@ApiModelProperty(position = 6)
 	private List<OrderCommand> listOrder;
-
-
 }

@@ -16,7 +16,11 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+//@Data để khởi tạo getter,setter,constructor mặc định
+//@NoArgConstructor là khởi tạo constructor không tham số
+//@AllArgsCOnstructor là khởi tạo constructor có tham số
+//@Entity để thêm 1 collection vào mongodb
+//@Table để tạo tên bảng
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,6 +41,7 @@ public class Supplier {
     private String address;
     
     //orpahnRemoval đảm bảo toàn vẹn dữ liệu khi product đã xóa ,thì supplier cũng phải cập nhập lại
+    //FetchType.Lazy:chỉ hiện dữ liện khi cần thiết
     @OneToMany(mappedBy = "supplierID",fetch = FetchType.LAZY,orphanRemoval = true)
     private List<Product> products;
 

@@ -1,14 +1,9 @@
 package com.springframework.projectshoptoy.api.mapper;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-
 import org.springframework.stereotype.Component;
-
 import com.springframework.projectshoptoy.api.commandObject.OrderDetailsCommand;
-import com.springframework.projectshoptoy.api.domain.Order;
 import com.springframework.projectshoptoy.api.domain.OrderDetails;
-
+//Chuyển các object thành object Command để đảm bảo dữ liệu không bị vòng lặp trong bi-direction
 @Component
 public class OrderDetailsMapper {
 	public OrderDetailsCommand orderDetailsToOrderDetailsCommand(OrderDetails orderDetails) {

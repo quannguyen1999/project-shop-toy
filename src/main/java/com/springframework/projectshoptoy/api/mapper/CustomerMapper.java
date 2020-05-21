@@ -2,21 +2,14 @@ package com.springframework.projectshoptoy.api.mapper;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import com.springframework.projectshoptoy.api.commandObject.CustomerCommand;
 import com.springframework.projectshoptoy.api.commandObject.OrderCommand;
 import com.springframework.projectshoptoy.api.domain.Customer;
 import com.springframework.projectshoptoy.api.domain.Order;
-
+//Chuyển các object thành object Command để đảm bảo dữ liệu không bị vòng lặp trong bi-direction
 @Component
 public class CustomerMapper {
-	
-//	@Autowired
-//	OrderMapper orderMapper;
-	
 	public CustomerCommand customerToCustomerCommand(Customer customer) {
 		if(customer==null) {
 			return null;

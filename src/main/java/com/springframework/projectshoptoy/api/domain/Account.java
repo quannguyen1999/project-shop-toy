@@ -17,7 +17,11 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+//@Data để khởi tạo getter,setter,constructor mặc định
+//@NoArgConstructor là khởi tạo constructor không tham số
+//@AllArgsCOnstructor là khởi tạo constructor có tham số
+//@Entity để thêm 1 collection vào mongodb
+//@Table để tạo tên bảng
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

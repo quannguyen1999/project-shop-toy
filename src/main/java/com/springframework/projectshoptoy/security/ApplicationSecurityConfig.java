@@ -60,7 +60,6 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter{
 			.antMatchers(CategoryController.BASE_URL+"/**").permitAll()
 			.antMatchers(SupplierController.BASE_URL+"/**").permitAll()
 			.antMatchers(ProductController.BASE_URL+"/**").permitAll()
-			.antMatchers(CustomerController.BASE_URL+"/**").permitAll()
 			.antMatchers(HttpMethod.POST,AccountController.BASE_URL).permitAll()
 			.antMatchers(AUTH_WHITELIST).permitAll() // cho phép truy cập
 			.antMatchers("/api/**").hasAnyRole(ADMIN.name(),EMP.name())

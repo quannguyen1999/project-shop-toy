@@ -1,14 +1,12 @@
 package com.springframework.projectshoptoy.api.commandObject;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-
-import com.springframework.projectshoptoy.api.domain.Product;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
+//objetct command để tránh vòng lặp khi sử dụng bi-direction
+//@Data để khởi tạo getter,setter,constructor mặc định
+//@NoArgConstructor là khởi tạo consuctor không tham số
 @Data
 @NoArgsConstructor
 public class OrderDetailsCommand {

@@ -22,6 +22,11 @@ import javax.validation.Valid;
 
 import java.util.List;
 import java.util.Set;
+//@Api:Mô tả api trong swagger-ui
+//@Slf4j để dùng logger.info,...
+//@RequiredArgsConstructor:để tạo constructor có tham số
+//@RequestMapping:tên trang để truy cập
+//@RestController :đăng ký Bean controler
 @Api(description = "khách hàng")
 @Slf4j
 @RequiredArgsConstructor
@@ -31,6 +36,9 @@ public class CustomerController {
     public final static String BASE_URL="/api/customers";
     private final CustomerService customerService;
 
+    //@ApiOperaion:đổi tên trong swagger-ui
+    //@GetMapping:Type:Get
+    //@Responstatus trả về kiểu status
     //lấy danh sách custmers
     @ApiOperation(value = "lấy danh sách custmers")
     @GetMapping

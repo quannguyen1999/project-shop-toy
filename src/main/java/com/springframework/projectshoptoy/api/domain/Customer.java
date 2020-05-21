@@ -17,7 +17,11 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
+//@Data để khởi tạo getter,setter,constructor mặc định
+//@NoArgConstructor là khởi tạo constructor không tham số
+//@AllArgsCOnstructor là khởi tạo constructor có tham số
+//@Entity để thêm 1 collection vào mongodb
+//@Table để tạo tên bảng
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -35,10 +39,6 @@ public class Customer {
     @Size(min = 5,message = "city must larger 5")
     private String city;
 
-//    @NotEmpty(message = "please provide email")
-////    @Pattern(regexp = "^[a-z0-9](\\.?[a-z0-9]){5,}@g(oogle)?mail\\.com$",message = "email invalid")
-//    private String email;
-
     @NotEmpty(message = "please provide firstName")
     @Size(min = 3,message = "firstName must larger 3")
     private String firstName;
@@ -51,6 +51,7 @@ public class Customer {
     @JoinColumn(name = "username")
     private Account account;
     
+    //cascade để đảm bảo khi xóa customer thì tất cả order của customer cũng phải xóa
     @OneToMany(mappedBy = "customer",cascade = CascadeType.REMOVE)
     private List<Order> listOrder;
 

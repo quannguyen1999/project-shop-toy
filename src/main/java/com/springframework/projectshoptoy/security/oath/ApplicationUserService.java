@@ -14,6 +14,7 @@ import com.springframework.projectshoptoy.dao.MyEntityManager;
 
 import static com.springframework.projectshoptoy.security.ApplicaitonUserRole.*;
 //kiểm tra username và password sẽ xảy ra ở đây
+//sử dụng oath
 @Service
 public class ApplicationUserService implements UserDetailsService{
 	@Autowired

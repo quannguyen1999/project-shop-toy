@@ -17,6 +17,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Set;
+//@Api:Mô tả api trong swagger-ui
+//@Slf4j để dùng logger.info,...
+//@RequiredArgsConstructor:để tạo constructor có tham số
+//@RequestMapping:tên trang để truy cập
+//@RestController :đăng ký Bean controler
 @Api(description = "nhà cung cấp")
 @Slf4j
 @RequiredArgsConstructor
@@ -26,6 +31,9 @@ public class SupplierController {
     public final static String  BASE_URL="/api/suppliers";
     private final SupplierService supplierService;
 
+    //@ApiOperaion:đổi tên trong swagger-ui
+    //@GetMapping:Type:Get
+    //@Responstatus trả về kiểu status
     //lấy danh sách Supplier
     @ApiOperation(value = "lấy danh sách Supplier")
     @GetMapping

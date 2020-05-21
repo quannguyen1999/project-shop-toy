@@ -15,6 +15,7 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+//Nơi để cấu hình swagger
 @EnableSwagger2
 @Configuration
 public class SwapperConfig {
@@ -31,7 +32,7 @@ public class SwapperConfig {
     }
     
 
-
+    //các thông tin trên swagger-ui
     private ApiInfo metaData(){
         Contact contact = new Contact("Nhóm ...", "...",
                 "john@springfrmework.guru");

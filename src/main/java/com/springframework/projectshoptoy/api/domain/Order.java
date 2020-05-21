@@ -24,7 +24,11 @@ import javax.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.util.List;
-
+//@Data để khởi tạo getter,setter,constructor mặc định
+//@NoArgConstructor là khởi tạo constructor không tham số
+//@AllArgsCOnstructor là khởi tạo constructor có tham số
+//@Entity để thêm 1 collection vào mongodb
+//@Table để tạo tên bảng
 @NoArgsConstructor
 @Getter
 @Setter

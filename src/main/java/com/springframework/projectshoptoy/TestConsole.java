@@ -31,25 +31,10 @@ import com.springframework.projectshoptoy.service.ProductServiceImpl;
 import com.springframework.projectshoptoy.service.SupplierService;
 import com.springframework.projectshoptoy.service.SupplierServiceImpl;
 
+//test dưới console
 public class TestConsole {
 	public static void main(String[] args) {
-		CustomerServiceImpl customerServiceImpl=new CustomerServiceImpl();
-		customerServiceImpl.getCustomers().forEach(t->{
-			System.out.println(t.getAddress());
-		});
-//		MyEntityManager myEntityManager=new MyEntityManager();
-//						init();
-//		//		MyEntityManager myEntityManager=new MyEntityManager();
-//		SupplierService supplierService=new SupplierServiceImpl();
-//		ProductService productService=new ProductServiceImpl();
-//		CategoryService categoryService=new CategoryServiceImpl();
-//		OrderService orderService=new OrderServiceImpl();
-//		CustomerService customerService=new CustomerServiceImpl();
-//		AccountService accountService=new AccountServiceImpl();
-////		
-//		System.out.println(accountService.deleteAccount("admin"));
 	}
-
 
 	public static void init() {
 		SupplierService supplierService=new SupplierServiceImpl();

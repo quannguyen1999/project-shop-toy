@@ -13,7 +13,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-
+//@Data để khởi tạo getter,setter,constructor mặc định
+//@NoArgConstructor là khởi tạo constructor không tham số
+//@AllArgsCOnstructor là khởi tạo constructor có tham số
+//@Entity để thêm 1 collection vào mongodb
+//@Table để tạo tên bảng
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

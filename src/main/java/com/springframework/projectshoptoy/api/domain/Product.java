@@ -19,7 +19,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.*;
-
+//@Entity để thêm 1 collection vào mongodb
+//@Table để tạo tên bảng
 @Entity
 @Table(name = "products")
 public class Product{

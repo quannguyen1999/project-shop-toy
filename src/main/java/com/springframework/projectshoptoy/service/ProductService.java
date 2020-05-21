@@ -1,11 +1,9 @@
 package com.springframework.projectshoptoy.service;
 
 import java.util.Set;
-
 import com.springframework.projectshoptoy.api.commandObject.ProductCommand;
-import com.springframework.projectshoptoy.api.domain.Account;
 import com.springframework.projectshoptoy.api.domain.Product;
-
+//Đảm bảo tính trừu tượng,kế thừa,bao đóng,Hợp thành
 public interface ProductService {
     //lấy danh sách Product
     Set<ProductCommand> getListProduct();

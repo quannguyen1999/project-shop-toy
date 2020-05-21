@@ -1,15 +1,10 @@
 package com.springframework.projectshoptoy.api.commandObject;
 
 import java.util.List;
-
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.springframework.projectshoptoy.api.domain.Product;
-
 import lombok.Data;
+//objetct command để tránh vòng lặp khi sử dụng bi-direction
+//@Data để khởi tạo getter,setter,constructor mặc định 
 @Data
 public class CategoryCommand {
 	private String categoryID;
@@ -23,8 +18,5 @@ public class CategoryCommand {
 	@NotEmpty(message = "picture not valid")
 	private String picture;
 
-	//hide property in swagger-ui
-//	@JsonIgnore
 	private List<ProductCommand> productCommands;
-
 }

@@ -27,7 +27,9 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+//thêm constructor mặc định
 @RequiredArgsConstructor
+//kế thừa OncePerrequestFilter và viết kiểu khác
 public class JwtTokenverifier extends OncePerRequestFilter{
 	private final SecretKey secretKey;
 	private final JwtConfig jwtConfig;

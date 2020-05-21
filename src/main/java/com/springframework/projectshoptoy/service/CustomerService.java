@@ -1,10 +1,9 @@
 package com.springframework.projectshoptoy.service;
 
 import java.util.Set;
-
 import com.springframework.projectshoptoy.api.commandObject.CustomerCommand;
 import com.springframework.projectshoptoy.api.domain.Customer;
-
+//Đảm bảo tính trừu tượng,kế thừa,bao đóng,Hợp thành
 public interface CustomerService {
     //lấy danh sách khách hàng
     Set<CustomerCommand> getCustomers();
@@ -23,6 +22,4 @@ public interface CustomerService {
 
     //tìm customer bằng userName
     CustomerCommand findCustomerByUserName(String userName);
-
-
 }

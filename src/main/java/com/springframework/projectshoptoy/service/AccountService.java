@@ -5,6 +5,7 @@ import com.springframework.projectshoptoy.exception.ConflixIdException;
 
 import java.util.Set;
 
+//Đảm bảo tính trừu tượng,kế thừa,bao đóng,Hợp thành
 public interface AccountService {
     //lấy danh sách account
     Set<Account> getListAccount();

@@ -25,8 +25,6 @@ import javax.persistence.EntityTransaction;
 @Slf4j
 @Service
 public class AccountServiceImpl implements  AccountService{
-//	private final PasswordEncoder en;
-//	
 	@Autowired
 	private MyEntityManager myEntityManager;
 	
