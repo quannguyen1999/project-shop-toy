@@ -1,5 +1,6 @@
 package com.springframework.projectshoptoy.service;
 
+import com.springframework.projectshoptoy.api.apiError.CustomRespone;
 import com.springframework.projectshoptoy.api.commandObject.CategoryCommand;
 import com.springframework.projectshoptoy.api.domain.Category;
 import com.springframework.projectshoptoy.api.domain.Order;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
@@ -30,24 +32,27 @@ public class CategoryServiceImpl implements  CategoryService{
 	}
 
 	@Override
-	public Set<CategoryCommand> getListCategory() {
+	public CustomRespone getListCategory() {
 		log.debug("get list categorys");
 		Set<CategoryCommand> categoryCommandSet=new HashSet<>();
 		myEntityManager.getAllData(new Category()).forEach(t->{
 			categoryCommandSet.add(categoryMapper.categoryToCategoyCommand(t));
 		});;
-		return categoryCommandSet;
+		return new CustomRespone(10,"danh sách category",categoryCommandSet);
 	}
 
 	@Override
-	public boolean deleteCategory(String id) {
+	public CustomRespone deleteCategory(String id) {
 		if(id==null) {
-			throw new NotFoundException("Id category can't be null");
+			return new CustomRespone(1, "id catregory không được rỗng", null);
 		}
-		Category category=categoryMapper.categoryCommandToCategory(findCategoryByID(id));
+		CustomRespone customRespone=findCategoryByID(id);
+		if(customRespone.getCode()!=9) {
+			return customRespone;
+		}
+		Category category=categoryMapper.categoryCommandToCategory((CategoryCommand)customRespone.getObject());
 		List<Product> listProduct=myEntityManager.query("db.products.find({'categoryID':'"+id+"'})",new Product());
 		listProduct.forEach(t->{
-			
 			Set<Order> orderSet=new HashSet<>();
 			myEntityManager.getAllData(new Order()).forEach(orderSet::add);
 			orderSet.forEach(order->{
@@ -64,19 +69,28 @@ public class CategoryServiceImpl implements  CategoryService{
 			});
 			myEntityManager.deleteT(t, t.getProductID());
 		});
-		return myEntityManager.deleteT(category,category.getCategoryID());
+		myEntityManager.deleteT(category,category.getCategoryID());
+		return new CustomRespone(7, "Xóa thành công", null);
 	}
 
 	@Override
-	public CategoryCommand findCategoryByID(String id) {
-		return categoryMapper.categoryToCategoyCommand((Category) myEntityManager.findById(new Category(), id).orElseThrow(()->new NotFoundException("can find id category"+id)));
+	public CustomRespone findCategoryByID(String id) {
+		if(id==null) {
+			return new CustomRespone(1, "id category không thể rỗng", null);
+		}
+		Optional<Object> categoryFind=myEntityManager.findById(new Category(), id);
+		if(categoryFind.isEmpty()) {
+			return new CustomRespone(3, "không tìm thấy", null);
+		}
+		CategoryCommand categoryCommand=categoryMapper.categoryToCategoyCommand((Category)categoryFind.get());
+		return new CustomRespone(9, "tìm thấy",categoryCommand);
 	}
 
 	@Override
-	public CategoryCommand createNewCategory(Category category) {
+	public CustomRespone createNewCategory(Category category) {
 		if(category.getCategoryID()!=null) {
 			if(myEntityManager.findById(new Category(),category.getCategoryID()).isPresent()) {
-				throw new ConflixIdException("category id had exists");
+				return new CustomRespone(5, "trùng id", null);
 			}
 		}
 		category.setCategoryID("CT"+ObjectId.get().toString());
@@ -85,12 +99,20 @@ public class CategoryServiceImpl implements  CategoryService{
 			return null;
 		};
 		
-		return categoryMapper.categoryToCategoyCommand(category);
+		return new CustomRespone(6,"thêm thành công",categoryMapper.categoryToCategoyCommand(category));
 	}
 
 	@Override
-	public CategoryCommand updateCategory(String id, Category category) {
-		Category categoryFind=categoryMapper.categoryCommandToCategory(findCategoryByID(id));//categoryRepository.findById(id).orElseThrow(()->new NotFoundException("Not found id "+id));
+	public CustomRespone updateCategory(Category category) {
+		if(category.getCategoryID()==null) {
+			return new CustomRespone(1, "category id không được null", null);
+		}
+		CustomRespone customRespone=findCategoryByID(category.getCategoryID());
+		if(customRespone.getCode()!=9) {
+			return customRespone;
+		}
+		CategoryCommand categoryCommand=(CategoryCommand)customRespone.getObject();
+		Category categoryFind=categoryMapper.categoryCommandToCategory(categoryCommand);//categoryRepository.findById(id).orElseThrow(()->new NotFoundException("Not found id "+id));
 		if(category.getCategoryName()!=null){
 			categoryFind.setCategoryName(category.getCategoryName());
 		}
@@ -100,7 +122,7 @@ public class CategoryServiceImpl implements  CategoryService{
 		if(category.getPicture()!=null){
 			categoryFind.setPicture(category.getPicture());
 		}
-		return categoryMapper.categoryToCategoyCommand(myEntityManager.updateT(categoryFind, categoryFind.getCategoryID()).get());
+		return new CustomRespone(8,"Cập nhập thành công",categoryMapper.categoryToCategoyCommand(myEntityManager.updateT(categoryFind, categoryFind.getCategoryID()).get()));
 	}
 
 
