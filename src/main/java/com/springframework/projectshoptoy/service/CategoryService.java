@@ -13,7 +13,6 @@ public interface CategoryService {
 
     //tìm kiếm category bằng id
     CategoryCommand findCategoryByID(String id);
-
     //tạo category
     CategoryCommand createNewCategory(Category category);
 
