@@ -40,33 +40,34 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter{
 	private final SecretKey secretKey;
 	//những trang cho phép truy cập
 	private static final String[] AUTH_WHITELIST = {
-	        "/swagger-resources/**",
-	        "/swagger-ui.html",
-	        "/v2/api-docs",
-	        "/webjars/**"
+			"/swagger-resources/**",
+			"/swagger-ui.html",
+			"/v2/api-docs",
+			"/webjars/**"
 	};
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-//			tắt sessionid
-			.csrf().disable()
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-			.and()
-			//nơi để xác minh username và gửi token
-			.addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(),jwtConfig,secretKey))
-			//nơi để xác minh token
-			.addFilterAfter(new JwtTokenverifier(secretKey,jwtConfig),JwtUsernameAndPasswordAuthenticationFilter.class)
-			.authorizeRequests() 
-			.antMatchers(CategoryController.BASE_URL+"/**").permitAll()
-			.antMatchers(SupplierController.BASE_URL+"/**").permitAll()
-			.antMatchers(ProductController.BASE_URL+"/**").permitAll()
-			.antMatchers(HttpMethod.POST,AccountController.BASE_URL).permitAll()
-			.antMatchers(AUTH_WHITELIST).permitAll() // cho phép truy cập
-			.antMatchers("/api/**").hasAnyRole(ADMIN.name(),EMP.name())
-			.anyRequest()	//còn lại bấy cứ request nào
-			.authenticated(); //đều phải xác thực
+		//tắt sessionid
+		.csrf().disable()
+		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+		.and()
+		//nơi để xác minh username và gửi token
+		.addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(),jwtConfig,secretKey))
+		//nơi để xác minh token
+		.addFilterAfter(new JwtTokenverifier(secretKey,jwtConfig),JwtUsernameAndPasswordAuthenticationFilter.class)
+		.authorizeRequests() 
+		.antMatchers(CategoryController.BASE_URL+"/**").permitAll()
+		.antMatchers(SupplierController.BASE_URL+"/**").permitAll()
+		.antMatchers(ProductController.BASE_URL+"/**").permitAll()
+		.antMatchers(AccountController.BASE_URL+"/**").permitAll()
+		.antMatchers(HttpMethod.POST,AccountController.BASE_URL).permitAll()
+		.antMatchers(AUTH_WHITELIST).permitAll() // cho phép truy cập
+		.antMatchers("/api/**").hasAnyRole(ADMIN.name(),EMP.name())
+		.anyRequest()	//còn lại bấy cứ request nào
+		.authenticated(); //đều phải xác thực
 	}
-	
+
 	@Bean
 	public DaoAuthenticationProvider daoAuthenticationProvider() {
 		DaoAuthenticationProvider provider=new DaoAuthenticationProvider();
@@ -74,7 +75,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter{
 		provider.setUserDetailsService(applicationUserService);
 		return provider;
 	}
-	
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.authenticationProvider(daoAuthenticationProvider());

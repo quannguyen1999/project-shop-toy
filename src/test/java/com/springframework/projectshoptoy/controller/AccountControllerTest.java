@@ -65,7 +65,7 @@ public class AccountControllerTest {
         accounts.add(account);
         accounts.add(account1);
 
-        when(accountService.getListAccount()).thenReturn(accounts);
+//        when(accountService.getListAccount()).thenReturn(accounts);
 
         mockMvc.perform(get(AccountController.BASE_URL)
                .contentType(MediaType.APPLICATION_JSON))
@@ -75,7 +75,7 @@ public class AccountControllerTest {
     //kiểm tra xoa account
     @Test
     public void deleteAccount() throws  Exception{
-        when(accountService.deleteAccount(any())).thenReturn(true);
+//        when(accountService.deleteAccount(any())).thenReturn(true);
         mockMvc.perform(delete(AccountController.BASE_URL+"/1"))
                 .andExpect(status().isOk());
 //                .andExpect(view().name("redirect:/"));
@@ -95,7 +95,7 @@ public class AccountControllerTest {
         Account account=new Account();
         account.setUserName("admin");
         account.setPassword("fuck");
-        when(accountService.findAccountByUserName(anyString())).thenReturn(account);
+//        when(accountService.findAccountByUserName(anyString())).thenReturn(account);
         mockMvc.perform(delete(AccountController.BASE_URL+"/1"))
                 .andExpect(status().isOk());
     }

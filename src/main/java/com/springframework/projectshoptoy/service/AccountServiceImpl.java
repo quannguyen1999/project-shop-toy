@@ -1,5 +1,6 @@
 package com.springframework.projectshoptoy.service;
 
+import com.springframework.projectshoptoy.api.apiError.CustomRespone;
 import com.springframework.projectshoptoy.api.domain.Account;
 import com.springframework.projectshoptoy.api.domain.Customer;
 import com.springframework.projectshoptoy.api.domain.Order;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -32,51 +34,79 @@ public class AccountServiceImpl implements  AccountService{
 	private PasswordEncoder en;
 
 	@Override
-	public Set<Account> getListAccount() {
+	public CustomRespone getListAccount() {
 		log.debug("get list accounts");
-		Set<Account> accountSet=new HashSet<>();
-		myEntityManager.getAllData(new Account()).forEach(accountSet::add);
-		
-		return accountSet;
+		List<Account> listAccount=new ArrayList<Account>();
+		myEntityManager.getAllData(new Account()).forEach(t->{
+			listAccount.add(t);
+		});
+		return new CustomRespone(10,"danh sách account",listAccount);
 	}
 
 	@Override
-	public boolean deleteAccount(String userName) {
-		Account account=findAccountByUserName(userName);
+	public CustomRespone deleteAccount(String userName) {
+		CustomRespone accountCustom=findAccountByUserName(userName);
+		if(accountCustom.getCode()!=9) {
+			return accountCustom;
+		}
 		List<Customer> listCustomer= myEntityManager.query("db.customers.find({'username':'"+userName+"'})",new Customer());
 		if(listCustomer.size()>=1) {
 			myEntityManager.deleteT(listCustomer.get(0),listCustomer.get(0).getCustomerID());
 		}
-		return	myEntityManager.deleteT(account,account.getUserName());
+		Account account=(Account)accountCustom.getObject();
+		myEntityManager.deleteT(account,account.getUserName());
+		return	new CustomRespone(7, "Xóa thành công",null);
 	}
 
 	@Override
-	public Account findAccountByUserName(String userName) {
-		return (Account) myEntityManager.findById(new Account(), userName).orElseThrow(()->new NotFoundException("can find id "+userName));
+	public CustomRespone findAccountByUserName(String userName) {
+		CustomRespone customRespone=null;
+		if(userName==null) {
+			return new CustomRespone(1, "userName không được rỗng", null);
+		}
+		Optional<Object> accounFind=myEntityManager.findById(new Account(), userName);
+		if(accounFind.isEmpty()) {
+			customRespone=new CustomRespone(3,"username không tồn tại",null);
+		}else {
+			customRespone=new CustomRespone(9,"tìm thấy", (Account)accounFind.get());
+		}
+		return customRespone;
 	}
 
 	@Override
-	public Account createNewAccount(Account account) {
+	public CustomRespone createNewAccount(Account account) {
 		myEntityManager=new MyEntityManager();
 		if(myEntityManager.findById(new Account(),account.getUserName()).isPresent()==true){
-			log.error("conflix username");
-			throw new ConflixIdException("conflix username");
+			return new CustomRespone(3, "trùng username", null);
 		}
 		account.setPassword(en.encode(account.getPassword()));
 		if(myEntityManager.addT(account,account.getUserName())==true) {
-			return account;
+			return new CustomRespone(6,"Thêm thành công", account);
 		};
-		return null;
+		return new CustomRespone(14	,"Thêm không thành công", null);
 	}
 
 	@Override
-	public Account updateAccount(String id, Account account) {
-		Account accountFind=(Account) myEntityManager.findById(new Account(),id).orElseThrow(()->new NotFoundException("Not found id "+id));
+	public CustomRespone updateAccount(Account account) {
+		if(account.getUserName()==null) {
+			return new CustomRespone(1, "username không được rỗng", null);
+		}
+		Optional<Object> findAccountOptinal= myEntityManager.findById(new Account(),account.getUserName());
+		if(findAccountOptinal.isPresent()==false) {
+			return new CustomRespone(3, "Không tìm thấy", null);
+		}
+		Account accountFind=(Account)findAccountOptinal.get();
 		if(account.getPassword()!=null){
 			accountFind.setPassword(en.encode(account.getPassword()));
 		}
+		if(account.getEmail()!=null) {
+			accountFind.setEmail(account.getPassword());
+		}
+		if(accountFind.isAccType()!=account.isAccType()) {
+			accountFind.setAccType(account.isAccType());
+		}
 		accountFind.setAccType(account.isAccType());
-		return myEntityManager.updateT(accountFind,accountFind.getUserName()).get();
+		return new CustomRespone(8, "Cập nhập thành công", myEntityManager.updateT(accountFind,accountFind.getUserName()).get());
 	}
 
 }
