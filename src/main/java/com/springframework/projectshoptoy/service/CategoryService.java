@@ -7,15 +7,12 @@ import com.springframework.projectshoptoy.api.domain.Category;
 public interface CategoryService {
     //lấy danh sách account
     Set<CategoryCommand> getListCategory();
-
     //xóa account
     boolean deleteCategory(String id);
-
     //tìm kiếm category bằng id
     CategoryCommand findCategoryByID(String id);
     //tạo category
     CategoryCommand createNewCategory(Category category);
-
     //cập nhập category
     CategoryCommand updateCategory(String id, Category category);
 }
