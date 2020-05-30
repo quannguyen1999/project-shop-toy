@@ -6,6 +6,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import org.springframework.stereotype.Component;
+
+import com.springframework.projectshoptoy.api.domain.Account;
 //@Component đăng ký bean trong spring container
 @Component
 public class MyEntityManager {
@@ -52,9 +54,9 @@ public class MyEntityManager {
 
 	//thêm dữ liệu
 	//Tạo query cho class,T là class abstract
-	public <T> boolean addT(T t,String id) {
+	public <T> boolean addT(T t,Object object) {
 		boolean result=false;
-		if(em.find(t.getClass(), id)!=null) {
+		if(em.find(t.getClass(), object)!=null) {
 			return result;
 		}
 		return functionT(t, 1);
